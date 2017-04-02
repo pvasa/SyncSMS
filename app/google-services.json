@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "279972632696",
+    "firebase_url": "https://syncsms-96c70.firebaseio.com",
+    "project_id": "syncsms-96c70",
+    "storage_bucket": "syncsms-96c70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279972632696:android:173fc2deddab4df3",
+        "android_client_info": {
+          "package_name": "ryan.syncsms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279972632696-vsblfho2tma5f1329a2o1err28a0ibc7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ryan.syncsms",
+            "certificate_hash": "23d8b5047a5581d87aaf54d53db927b3e36fb2e7"
+          }
+        },
+        {
+          "client_id": "279972632696-4e9188ndu3v3dbg65hktf53peso5muid.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFH9QKldd3-pmWg5-PDL3f6todFEnn04g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279972632696-4e9188ndu3v3dbg65hktf53peso5muid.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

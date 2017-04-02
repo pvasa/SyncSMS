@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/a228dc8b27af198ddc0d312dcd1b8293e5f68d2d/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1ac56e5801e986583cbe27f2cce57f626cc7ff93">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_4b2b7257f658b6e99c05374d01cab11322db1827.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/cf5727a8cf2acfd3172d7afe1356163990f48022/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="38789e20ace9ab7dbd00554bd2673ab424478d3b">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_3ec8d7cae949df50b594a0c19582a40bb47dd8d5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/6c2db0f5a8e8ca0ed71f8bcc1347b612aff82945/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0d5cbbbfe040201c7569478b70a13b58fd11aab4">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_d4df6944963b55bde6b3239b41c5dcae9739e193.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/c65647fe316f4c8e6584eca3c14578718d9d4a31/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_fd55e3cd76aa65e14e04739ae02c8504a33065a1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/9fcfa029a4c228eb1b53fff38911567a9355f9b8/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_8f058898e5af56a71ce7c0b592a26dc83a3f82b6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/support-annotations-25.3.1_960d163d662f9a67b1374bdc7b2cce896f37b18e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/adf0f8984b779f7b449d2e5c49f29fb6a511e9f9/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_ae5e19a94507c309d725d098c5177a73c0bbf6dd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/79c63ea53bd52fca218b2d1de1fd49755f2a3567/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4a26a1154d053ab11aaf4c3967c42a4d66390991">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_cf8a65cf0e5aa9ccb78a642d0ceb32b286fa0872.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/bd5a3593aeecfd1fd9a02211034271b37ec64632/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0e301f24b283f14b564f660c9abe863af6be5896">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_6a6c9ccfbeb602998d9d161d7f3cb6f6acda9a93.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/db7dd2d354f0fd25aa258f8d9d58be56e1cfa153/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="94fca868854457ede6df15c902938468c71d579e">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_4c9fd7c5180e34dbc9f41d13ff96e469b7a0992a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/7ec147ce895e193f2e753770ae10733511f9d3aa/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d4cf6227dd6a2ceff0f7dcf0c324380b7abf2c28">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_5156a7ef07b582da112fbe0169b5f149836f128b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/52ee365bdd2cb58b4e413eb63f4735dd613febb9/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_0ba5f691d0d39891e305fd5bab4a09ac09af72ce.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/5f31cfad6d9dba478a15602952d8390bd3d98844/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_11af6f1be6d1da1aec0bc92988f901933a912f78.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/5937f5f7f8e52578cc0e4a025228395e4583a3b8/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="95519720620b553f63afc789beba9ad582807f7c">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_f4d3e16ac636e438d7f9b5eb80ca1d5fd0c95baf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/40c38cb3c0a52afa22b53ce4f53e85fc0c066706/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="bd75f9f0296fe220da6d0ad961831b04541c4452">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_ef468ddbc06699371ff9e111f51669e35bc531e6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/112ce8d8fda9a6a900b25802f2577b289a4d918b/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_93273b84293ded631d994d26a79e5126c1614c3b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/6be354efd1c59c7d2237e6b9d4ca1399785c623e/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_e5f89a8fc1ee44e90e3fc82645384dfc8378be7e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/ryan/.android/build-cache/1f931e0c2026d174599d7708bf66734eb57b34c3/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/pre-dexed/debug/classes_e061e4be7c2c1939f62cfc3d152a5b0c0ba0fb84.jar" />
+    </item>
+
+</items>
