@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_messages"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="99"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+        <EditText
+            android:id="@+id/ed_new_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:inputType="textCapSentences"
+            android:layout_marginStart="8dp"
+            android:layout_weight="99"
+            android:hint="@string/ed_new_message"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_send_sms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_send_white_48dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
