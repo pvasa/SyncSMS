@@ -1,4 +1,4 @@
-package ryan.syncsms.message;
+package svyp.syncsms.message;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -14,9 +14,9 @@ import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.EditText;
 
-import ryan.syncsms.Constants;
-import ryan.syncsms.R;
-import ryan.syncsms.Utils;
+import svyp.syncsms.Constants;
+import svyp.syncsms.R;
+import svyp.syncsms.Utils;
 
 public class MessageActivity extends AppCompatActivity {
 

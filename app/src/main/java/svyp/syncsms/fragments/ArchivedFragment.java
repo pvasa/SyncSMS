@@ -1,4 +1,4 @@
-package ryan.syncsms.fragments;
+package svyp.syncsms.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,21 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ryan.syncsms.MainActivity;
-import ryan.syncsms.MainAdapter;
-import ryan.syncsms.R;
+import svyp.syncsms.MainAdapter;
+import svyp.syncsms.R;
 
-public class MessagesFragment extends Fragment {
+public class ArchivedFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    public static final String TITLE = "Messages";
+    public static final String TITLE = "Archived";
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public static MessagesFragment newInstance(int sectionNumber) {
-        MessagesFragment fragment = new MessagesFragment();
+    public static ArchivedFragment newInstance(int sectionNumber) {
+        ArchivedFragment fragment = new ArchivedFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -32,7 +31,6 @@ public class MessagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((MainActivity)getActivity()).appendToolBarTitle(" - " + TITLE);
         View rootView = inflater.inflate(R.layout.fragment_messages, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_main);
 

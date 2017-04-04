@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ryan.syncsms">
+    package="svyp.syncsms">
 
     <uses-permission android:name="android.permission.SEND_SMS"/>
 
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="svyp.syncsms.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,8 +22,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".message.MessageActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:name="svyp.syncsms.message.MessageActivity"
+            android:parentActivityName="svyp.syncsms.MainActivity"/>
     </application>
 
 </manifest>

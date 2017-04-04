@@ -1,4 +1,4 @@
-package ryan.syncsms;
+package svyp.syncsms;
 
 import org.junit.Test;
 

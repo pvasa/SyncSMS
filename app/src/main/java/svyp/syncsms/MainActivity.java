@@ -1,4 +1,4 @@
-package ryan.syncsms;
+package svyp.syncsms;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import ryan.syncsms.fragments.ArchivedFragment;
-import ryan.syncsms.fragments.MessagesFragment;
-import ryan.syncsms.message.MessageActivity;
+import svyp.syncsms.fragments.ArchivedFragment;
+import svyp.syncsms.fragments.MessagesFragment;
+import svyp.syncsms.message.MessageActivity;
 
 public class MainActivity extends AppCompatActivity {
 
