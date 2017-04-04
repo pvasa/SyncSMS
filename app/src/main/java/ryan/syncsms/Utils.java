@@ -18,7 +18,7 @@ public class Utils {
                     != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                     explainPermission(permission, activity, requestCode);
-                } //else unGranted.add(permission);
+                } else unGranted.add(permission);
             }
         }
         if (!unGranted.isEmpty()) {
@@ -52,6 +52,7 @@ public class Utils {
                         .setMessage("Please grant permission to send SMS for this app to function correctly.")
                         .setPositiveButton(positiveText, positiveAction)
                         .setNegativeButton(negativeText, negativeAction)
+                        .setCancelable(false)
                         .show();
                 break;
             default:
@@ -60,6 +61,7 @@ public class Utils {
                         .setMessage("Please grant " + permission + " for this app to function correctly.")
                         .setPositiveButton(positiveText, positiveAction)
                         .setNegativeButton(negativeText, negativeAction)
+                        .setCancelable(false)
                         .show();
         }
     }

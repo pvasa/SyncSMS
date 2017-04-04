@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.util.ArraySet;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -75,12 +76,18 @@ public class MessageActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(
-            int requestCode, @NonNull final String permissions[], @NonNull int[] grantResults) {
+            int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case Constants.RC_PERMISSIONS_MESSAGE_ACTIVITY: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                    finish();
+                ArraySet<String> unGranted = new ArraySet<>();
+                for (int i = 0; i < grantResults.length; i++) {
+                    if (grantResults.length > 0
+                            && grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                        unGranted.add(permissions[i]);
+                    }
+                }
+                if (!unGranted.isEmpty()) {
+                    Utils.checkPermissions(unGranted.toArray(new String[]{}), this, requestCode);
                 }
             }
         }
