@@ -14,15 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import svyp.syncsms.fragments.ArchivedFragment;
-import svyp.syncsms.fragments.MessagesFragment;
-import svyp.syncsms.message.MessageActivity;
+import svyp.syncsms.archived.ArchivedFragment;
+import svyp.syncsms.messages.MessagesFragment;
+import svyp.syncsms.newMessage.NewMessageActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
+     * messages for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, MessageActivity.class));
+                startActivity(new Intent(MainActivity.this, NewMessageActivity.class));
             }
         });
     }

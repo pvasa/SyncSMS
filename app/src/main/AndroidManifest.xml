@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="svyp.syncsms.message.MessageActivity"
+            android:name="svyp.syncsms.newMessage.NewMessageActivity"
             android:parentActivityName="svyp.syncsms.MainActivity"/>
     </application>
 
