@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import svyp.syncsms.R;
+import svyp.syncsms.models.Message;
 
 public class ArchivedFragment extends Fragment {
 
@@ -30,20 +31,21 @@ public class ArchivedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_messages, container, false);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_main);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+        View rootView = inflater.inflate(R.layout.fragment_archived, container, false);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_archived);
+
         mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
-        mAdapter = new ArchivedAdapter(new String[]{"Ryan", "Priyank"});
+        Message newMessage = new Message("Ryan", "+16476189379", "Test message", "04/04/2017");
+        Message newMessage1 = new Message("Priyank", "6476189379", "Hey there, what's up?", "04/04/2017");
+
+        mAdapter = new ArchivedAdapter(new Message[]{newMessage, newMessage1});
         mRecyclerView.setAdapter(mAdapter);
+
         return rootView;
     }
 }

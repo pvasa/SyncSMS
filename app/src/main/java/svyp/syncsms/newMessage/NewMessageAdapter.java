@@ -36,7 +36,7 @@ class NewMessageAdapter extends RecyclerView.Adapter<NewMessageAdapter.ViewHolde
     public NewMessageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         CardView v = (CardView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view_message, parent, false);
+                .inflate(R.layout.card_view_messages, parent, false);
         // set the view's size, margins, padding and layout parameters
 
         return new ViewHolder(v);

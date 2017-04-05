@@ -10,7 +10,10 @@ import android.support.v4.util.ArraySet;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -32,11 +35,17 @@ public class NewMessageActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Utils.checkPermissions(
-                new String[]{Manifest.permission.SEND_SMS, Manifest.permission.CALL_PHONE},
-                this, Constants.RC_PERMISSIONS_MESSAGE_ACTIVITY);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        setContentView(R.layout.activity_message);
+        Utils.checkPermissions(
+                new String[] {
+                        Manifest.permission.SEND_SMS,
+                        Manifest.permission.READ_CONTACTS
+                },
+                this, Constants.RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY);
+
+        setContentView(R.layout.activity_new_message);
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_messages);
 
         // use this setting to improve performance if you know that changes
@@ -47,7 +56,6 @@ public class NewMessageActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
         mAdapter = new NewMessageAdapter(new String[]{"Ryan", "Priyank"});
         mRecyclerView.setAdapter(mAdapter);
 
@@ -75,19 +83,33 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_new_message, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                break;
+        }
+        return true;
+    }
+
+    @Override
     public void onRequestPermissionsResult(
             int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case Constants.RC_PERMISSIONS_MESSAGE_ACTIVITY: {
+            case Constants.RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY: {
                 ArraySet<String> unGranted = new ArraySet<>();
                 for (int i = 0; i < grantResults.length; i++) {
-                    if (grantResults.length > 0
-                            && grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                         unGranted.add(permissions[i]);
                     }
                 }
                 if (!unGranted.isEmpty()) {
-                    Utils.checkPermissions(unGranted.toArray(new String[]{}), this, requestCode);
+                    finish();
                 }
             }
         }

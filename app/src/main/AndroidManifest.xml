@@ -3,6 +3,7 @@
     package="svyp.syncsms">
 
     <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:allowBackup="true"
@@ -23,7 +24,8 @@
         </activity>
         <activity
             android:name="svyp.syncsms.newMessage.NewMessageActivity"
-            android:parentActivityName="svyp.syncsms.MainActivity"/>
+            android:parentActivityName="svyp.syncsms.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
