@@ -16,9 +16,14 @@ import android.view.View;
 
 import svyp.syncsms.archived.ArchivedFragment;
 import svyp.syncsms.messages.MessagesFragment;
+import svyp.syncsms.models.Message;
 import svyp.syncsms.newMessage.NewMessageActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements MainInterface {
+
+    private MessagesFragment messagesFragment;
+    private ArchivedFragment archivedFragment;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -81,12 +86,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void setToolBarTitle(String title) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.setTitle(title);
-    }
-
     public void appendToolBarTitle(String title) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
@@ -115,6 +114,16 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void archive(Message message) {
+        archivedFragment.addMessage(message);
+    }
+
+    @Override
+    public void unArchive(Message message) {
+        messagesFragment.addMessage(message);
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -129,9 +138,9 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return MessagesFragment.newInstance(position + 1);
+                    return messagesFragment = MessagesFragment.newInstance(position + 1);
                 case 1:
-                    return ArchivedFragment.newInstance(position + 1);
+                    return archivedFragment = ArchivedFragment.newInstance(position + 1);
             }
             return new Fragment();
         }

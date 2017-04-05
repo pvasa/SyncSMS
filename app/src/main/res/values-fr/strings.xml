@@ -2,4 +2,6 @@
 <resources>
     <string name="action_settings">Paramètres</string>
     <string name="ed_new_message">Nouveau message</string>
+    <string name="cd_user_picture">Photo de l\'utilisateur</string>
+    <string name="item_title_search">Chercher</string>
 </resources>

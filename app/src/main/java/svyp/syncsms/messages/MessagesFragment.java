@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 import svyp.syncsms.MainActivity;
 import svyp.syncsms.R;
@@ -44,10 +47,39 @@ public class MessagesFragment extends Fragment {
 
         Message newMessage = new Message("Ryan", "+16476189379", "Test message", "04/04/2017");
         Message newMessage1 = new Message("Priyank", "6476189379", "Hey there, what's up?", "04/04/2017");
+        ArrayList<Message> messages = new ArrayList<>();
+        messages.add(newMessage);
+        messages.add(newMessage1);
 
-        mAdapter = new MessagesAdapter(new Message[]{newMessage, newMessage1});
+        mAdapter = new MessagesAdapter(messages);
         mRecyclerView.setAdapter(mAdapter);
 
+        ItemTouchHelper.SimpleCallback simpleCallback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(
+                    RecyclerView recyclerView,
+                    RecyclerView.ViewHolder viewHolder,
+                    RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position = viewHolder.getAdapterPosition();
+                if (direction == ItemTouchHelper.RIGHT) {
+                    Message removedMessage = ((MessagesAdapter) mAdapter).removeMessage(position);
+                    ((MainActivity) getActivity()).archive(removedMessage);
+                }
+            }
+        };
+
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(mRecyclerView);
+
         return rootView;
+    }
+
+    public void addMessage(Message message) {
+        ((MessagesAdapter) mAdapter).addMessage(message);
     }
 }

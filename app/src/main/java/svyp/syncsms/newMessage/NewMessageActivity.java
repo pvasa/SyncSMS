@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.util.ArraySet;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,9 +35,17 @@ public class NewMessageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_new_message);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Send new message");
         setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         Utils.checkPermissions(
                 new String[] {
@@ -45,7 +54,6 @@ public class NewMessageActivity extends AppCompatActivity {
                 },
                 this, Constants.RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY);
 
-        setContentView(R.layout.activity_new_message);
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_messages);
 
         // use this setting to improve performance if you know that changes
@@ -85,16 +93,12 @@ public class NewMessageActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_new_message, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                break;
-        }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

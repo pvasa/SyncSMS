@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import svyp.syncsms.R;
 import svyp.syncsms.models.Message;
 
 class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.ViewHolder> {
 
-    private Message[] dataset;
+    private ArrayList<Message> dataset;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -28,7 +30,7 @@ class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.ViewHolder> {
         }
     }
 
-    ArchivedAdapter(Message[] dataset) {
+    ArchivedAdapter(ArrayList<Message> dataset) {
         this.dataset = dataset;
     }
 
@@ -41,14 +43,27 @@ class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvName.setText(dataset[position].name);
-        holder.tvMessage.setText(dataset[position].message);
-        holder.tvDate.setText(dataset[position].date);
+        holder.tvName.setText(dataset.get(position).name);
+        holder.tvMessage.setText(dataset.get(position).message);
+        holder.tvDate.setText(dataset.get(position).date);
         holder.ivUserPicture.setImageResource(R.mipmap.ic_launcher);
     }
 
     @Override
     public int getItemCount() {
-        return dataset.length;
+        if (dataset != null) return dataset.size();
+        return 0;
+    }
+
+    Message removeMessage(int position) {
+        Message removed = dataset.get(position);
+        dataset.remove(position);
+        notifyItemRemoved(position);
+        return removed;
+    }
+
+    void addMessage(Message message) {
+        dataset.add(message);
+        notifyItemInserted(dataset.indexOf(message));
     }
 }
