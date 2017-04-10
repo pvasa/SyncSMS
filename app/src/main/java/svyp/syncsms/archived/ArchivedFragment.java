@@ -36,8 +36,8 @@ public class ArchivedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_archived, container, false);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_archived);
+        View rootView = inflater.inflate(R.layout.recycler_view, container, false);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
 
         mRecyclerView.setHasFixedSize(true);
 

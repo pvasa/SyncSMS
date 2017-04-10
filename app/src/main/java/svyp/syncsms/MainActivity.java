@@ -51,11 +51,18 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         toolbarTitle = toolbar.getTitle().toString();
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
+                intent.putExtra(Constants.KEY_TITLE, "Send new message");
+                startActivity(intent);
+            }
+        });
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -67,22 +74,16 @@ public class MainActivity extends AppCompatActivity
                 switch (position) {
                     case 0:
                         appendToolBarTitle(" - " + MessagesFragment.TITLE);
+                        fab.show();
                         break;
                     case 1:
                         appendToolBarTitle(" - " + ArchivedFragment.TITLE);
+                        fab.hide();
                         break;
                 }
             }
             @Override
             public void onPageScrollStateChanged(int state) {}
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, NewMessageActivity.class));
-            }
         });
     }
 
@@ -94,24 +95,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_messages, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

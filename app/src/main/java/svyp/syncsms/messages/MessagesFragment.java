@@ -37,8 +37,8 @@ public class MessagesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         ((MainActivity)getActivity()).appendToolBarTitle(" - " + TITLE);
-        View rootView = inflater.inflate(R.layout.fragment_messages, container, false);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_messages);
+        View rootView = inflater.inflate(R.layout.recycler_view, container, false);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
 
         mRecyclerView.setHasFixedSize(true);
 

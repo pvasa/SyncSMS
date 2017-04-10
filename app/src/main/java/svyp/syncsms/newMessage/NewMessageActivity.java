@@ -18,9 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
 import svyp.syncsms.Utils;
+import svyp.syncsms.models.Message;
 
 public class NewMessageActivity extends AppCompatActivity {
 
@@ -38,12 +41,11 @@ public class NewMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_message);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Send new message");
+        toolbar.setTitle(getIntent().getStringExtra(Constants.KEY_TITLE));
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -54,7 +56,7 @@ public class NewMessageActivity extends AppCompatActivity {
                 },
                 this, Constants.RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_messages);
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -64,11 +66,37 @@ public class NewMessageActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new NewMessageAdapter(new String[]{"Ryan", "Priyank"});
+        mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right,int bottom, int oldLeft, int oldTop,int oldRight, int oldBottom) {
+                mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
+            }
+        });
+
+        Message newMessage = new Message("Ryan", "+16476189379", "Hi", "03:00 PM");
+        Message newMessage1 = new Message("Priyank", "6476189379", "Hey there, what's up?jsdkfhkusakdufkuhakufkurwehkiufnwekcubekuhfkuwekufbuywebkauhfukykufshekuyawukfkuwekh", "03:05 PM");
+        ArrayList<Message> messages = new ArrayList<>();
+        messages.add(newMessage);
+        messages.add(newMessage1);
+        /*messages.add(newMessage);
+        messages.add(newMessage1);
+        messages.add(newMessage);
+        messages.add(newMessage1);
+        messages.add(newMessage);
+        messages.add(newMessage1);
+        messages.add(newMessage);
+        messages.add(newMessage1);
+        messages.add(newMessage);
+        messages.add(newMessage1);
+        messages.add(newMessage);*/
+
+        mAdapter = new NewMessageAdapter(messages);
         mRecyclerView.setAdapter(mAdapter);
 
         edNewMessage = (EditText) findViewById(R.id.ed_new_message);
         edNewMessage.requestFocus();
+
+        mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
 
         findViewById(R.id.fab_send_sms).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,8 +104,7 @@ public class NewMessageActivity extends AppCompatActivity {
                 String newMessage = edNewMessage.getText().toString();
                 SmsManager sms = SmsManager.getDefault();
                 if (newMessage.equals("")) {
-                    Snackbar.make(findViewById(android.R.id.content),
-                            "Message cannot be empty.", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Message cannot be empty.", Snackbar.LENGTH_SHORT).show();
                     return;
                 } else if (newMessage.length() > 160) {
                     sms.sendMultipartTextMessage(
