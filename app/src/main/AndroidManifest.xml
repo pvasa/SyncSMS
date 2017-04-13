@@ -28,7 +28,13 @@
         <activity
             android:name="svyp.syncsms.newMessage.NewMessageActivity"
             android:parentActivityName="svyp.syncsms.MainActivity"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name="svyp.syncsms.chat.ChatActivity"
+            android:parentActivityName="svyp.syncsms.MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>

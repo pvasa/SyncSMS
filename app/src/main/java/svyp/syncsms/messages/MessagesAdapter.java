@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
+import svyp.syncsms.chat.ChatActivity;
 import svyp.syncsms.models.Message;
-import svyp.syncsms.newMessage.NewMessageActivity;
 
 class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
 
@@ -82,7 +82,7 @@ class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
                     notifyItemChanged(pos);
                     notifyItemRangeChanged(pos, getItemCount());
                 }
-                Intent intent = new Intent(v.getContext(), NewMessageActivity.class);
+                Intent intent = new Intent(v.getContext(), ChatActivity.class);
                 intent.putExtra(Constants.KEY_TITLE, message.name);
                 v.getContext().startActivity(intent);
             }

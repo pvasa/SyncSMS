@@ -20,4 +20,5 @@ public class Utils {
             ActivityCompat.requestPermissions(activity, unGranted.toArray(new String[]{}), requestCode);
         }
     }
+
 }
