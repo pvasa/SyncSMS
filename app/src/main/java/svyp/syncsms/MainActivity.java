@@ -16,9 +16,14 @@ import android.view.View;
 
 import svyp.syncsms.archived.ArchivedFragment;
 import svyp.syncsms.messages.MessagesFragment;
-import svyp.syncsms.newMessage.NewMessageActivity;
+import svyp.syncsms.models.Message;
+import svyp.syncsms.newMessage.ContactsActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements MainInterface {
+
+    private MessagesFragment messagesFragment;
+    private ArchivedFragment archivedFragment;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -46,11 +51,18 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbarTitle = toolbar.getTitle().toString();
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ContactsActivity.class);
+                intent.putExtra(Constants.KEY_TITLE, "Select contacts");
+                startActivity(intent);
+            }
+        });
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -62,29 +74,17 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         appendToolBarTitle(" - " + MessagesFragment.TITLE);
+                        fab.show();
                         break;
                     case 1:
                         appendToolBarTitle(" - " + ArchivedFragment.TITLE);
+                        fab.hide();
                         break;
                 }
             }
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, NewMessageActivity.class));
-            }
-        });
-    }
-
-    public void setToolBarTitle(String title) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.setTitle(title);
     }
 
     public void appendToolBarTitle(String title) {
@@ -95,24 +95,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_messages, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    public void archive(Message message) {
+        archivedFragment.addMessage(message);
+    }
+
+    @Override
+    public void unArchive(Message message) {
+        messagesFragment.addMessage(message);
     }
 
     /**
@@ -129,9 +133,9 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return MessagesFragment.newInstance(position + 1);
+                    return messagesFragment = MessagesFragment.newInstance(position + 1);
                 case 1:
-                    return ArchivedFragment.newInstance(position + 1);
+                    return archivedFragment = ArchivedFragment.newInstance(position + 1);
             }
             return new Fragment();
         }
