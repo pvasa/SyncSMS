@@ -26,14 +26,14 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/rl_send_message"
+        android:id="@+id/ll_send_message"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv"
+            android:id="@+id/rv_messages"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

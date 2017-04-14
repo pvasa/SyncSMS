@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
@@ -19,7 +19,7 @@ import svyp.syncsms.models.Message;
 
 class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.ViewHolder> {
 
-    private ArrayList<Message> dataset;
+    private List<Message> mDataset;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -36,8 +36,8 @@ class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.ViewHolder> {
         }
     }
 
-    ArchivedAdapter(ArrayList<Message> dataset) {
-        this.dataset = dataset;
+    ArchivedAdapter(List<Message> mDataset) {
+        this.mDataset = mDataset;
     }
 
     @Override
@@ -50,11 +50,16 @@ class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ArchivedAdapter.ViewHolder holder, int position) {
 
-        final Message message = dataset.get(position);
+        final Message message = mDataset.get(position);
         final int pos = position;
 
         holder.ivUserPicture.setImageResource(R.mipmap.ic_launcher);
-        holder.tvName.setText(message.name);
+        final StringBuilder names = new StringBuilder();
+        for (int i = 0; i < message.contacts.size(); i++) {
+            names.append(message.contacts.get(i).name);
+            if (i < message.contacts.size() - 1) names.append(", ");
+        }
+        holder.tvName.setText(names.toString());
         holder.tvMessage.setText(message.message);
         holder.tvDate.setText(message.date);
 
@@ -78,12 +83,12 @@ class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.ViewHolder> {
                 if (!message.read) {
                     message.read = true;
                     message.unreadCount = 0;
-                    dataset.set(pos, message);
+                    mDataset.set(pos, message);
                     notifyItemChanged(pos);
                     notifyItemRangeChanged(pos, getItemCount());
                 }
                 Intent intent = new Intent(v.getContext(), ChatActivity.class);
-                intent.putExtra(Constants.KEY_TITLE, message.name);
+                intent.putExtra(Constants.KEY_TITLE, names.toString());
                 v.getContext().startActivity(intent);
             }
         });
@@ -91,20 +96,20 @@ class ArchivedAdapter extends RecyclerView.Adapter<ArchivedAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return dataset != null ? dataset.size() : 0;
+        return mDataset != null ? mDataset.size() : 0;
     }
 
     Message removeMessage(int position) {
-        Message removed = dataset.get(position);
-        dataset.remove(position);
+        Message removed = mDataset.get(position);
+        mDataset.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, getItemCount());
         return removed;
     }
 
     void addMessage(Message message) {
-        dataset.add(message);
-        notifyItemInserted(dataset.indexOf(message));
-        notifyItemRangeChanged(dataset.indexOf(message), getItemCount());
+        mDataset.add(message);
+        notifyItemInserted(mDataset.indexOf(message));
+        notifyItemRangeChanged(mDataset.indexOf(message), getItemCount());
     }
 }

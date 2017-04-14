@@ -17,7 +17,7 @@ import android.view.View;
 import svyp.syncsms.archived.ArchivedFragment;
 import svyp.syncsms.messages.MessagesFragment;
 import svyp.syncsms.models.Message;
-import svyp.syncsms.newMessage.NewMessageActivity;
+import svyp.syncsms.newMessage.ContactsActivity;
 
 public class MainActivity extends AppCompatActivity
         implements MainInterface {
@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
-                intent.putExtra(Constants.KEY_TITLE, "Send new message");
+                Intent intent = new Intent(MainActivity.this, ContactsActivity.class);
+                intent.putExtra(Constants.KEY_TITLE, "Select contacts");
                 startActivity(intent);
             }
         });

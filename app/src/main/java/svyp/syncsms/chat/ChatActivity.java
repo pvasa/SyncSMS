@@ -20,12 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import java.util.ArrayList;
-
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
 import svyp.syncsms.Utils;
-import svyp.syncsms.models.Message;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -59,7 +56,7 @@ public class ChatActivity extends AppCompatActivity {
                 },
                 this, Constants.RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv);
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_messages);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -76,24 +73,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        Message newMessage = new Message("Ryan", "+16476189379", "Hi", "03:00 PM");
-        Message newMessage1 = new Message("Priyank", "6476189379", "Hey there, what's up?jsdkfhkusakdufkuhakufkurwehkiufnwekcubekuhfkuwekufbuywebkauhfukykufshekuyawukfkuwekh", "03:05 PM");
-        ArrayList<Message> messages = new ArrayList<>();
-        messages.add(newMessage);
-        messages.add(newMessage1);
-        /*messages.add(newMessage);
-        messages.add(newMessage1);
-        messages.add(newMessage);
-        messages.add(newMessage1);
-        messages.add(newMessage);
-        messages.add(newMessage1);
-        messages.add(newMessage);
-        messages.add(newMessage1);
-        messages.add(newMessage);
-        messages.add(newMessage1);
-        messages.add(newMessage);*/
-
-        mAdapter = new ChatAdapter(messages);
+        mAdapter = new ChatAdapter(Constants.MESSAGES);
         mRecyclerView.setAdapter(mAdapter);
 
         fabNewMessage = (FloatingActionButton) findViewById(R.id.fab_send_sms);

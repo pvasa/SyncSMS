@@ -1,49 +1,54 @@
 package svyp.syncsms.newMessage;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import svyp.syncsms.R;
+import svyp.syncsms.models.Message;
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
+class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
 
-    private ArrayList<String> dataset;
+    private List<Message> mDataset;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView messageCardView;
-        TextView tvName;
+        CardView messageCardView;
+        TextView tvMessage, tvDate;
 
-        ViewHolder(TextView v) {
+        ViewHolder(CardView v) {
             super(v);
             messageCardView = v;
-            tvName = (TextView) v.findViewById(R.id.tv_name);
+            tvMessage = (TextView) v.findViewById(R.id.tv_message);
+            tvDate = (TextView) v.findViewById(R.id.tv_date);
         }
     }
 
-    ContactsAdapter(ArrayList<String> dataset) {
-        this.dataset = dataset;
+    ContactsAdapter(List<Message> mDataset) {
+        this.mDataset = mDataset;
     }
 
     @Override
     public ContactsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view_contacts, parent, false);
-        return new ContactsAdapter.ViewHolder(v);
+        CardView v = (CardView) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.card_view_chat, parent, false);
+
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ContactsAdapter.ViewHolder holder, int position) {
-        holder.tvName.setText(dataset.get(position));
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.tvMessage.setText(mDataset.get(position).message);
+        holder.tvDate.setText(mDataset.get(position).date);
     }
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return mDataset.size();
     }
 }

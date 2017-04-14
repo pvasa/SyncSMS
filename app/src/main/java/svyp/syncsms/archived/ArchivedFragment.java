@@ -37,7 +37,7 @@ public class ArchivedFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.recycler_view, container, false);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_messages);
 
         mRecyclerView.setHasFixedSize(true);
 
