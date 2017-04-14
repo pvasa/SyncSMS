@@ -3,21 +3,48 @@
 
     <item
         is-multidex="true"
-        jar="/home/ryan/Desktop/SyncSMS/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jar="/Users/yatin/Codebase/android/project/SyncSMS/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
-        revision="25.0.2"
-        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
-        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_46b33e646cb8994553cd3d1eaad83892a9c9ab1a/classes.dex" />
+        revision="25.0.0"
+        sha1="d6968db1c242fc2a8404776b2e86d5571726ae1d">
+        <dex dex="/Users/yatin/Codebase/android/project/SyncSMS/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_d566f08343a05e4c8cea5a1aec2a799d87a995d2/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/home/ryan/Desktop/SyncSMS/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jar="/Users/yatin/.android/build-cache/e8c906d5dae279182c8c5450c6e00b665ae7e332/output/jars/classes.jar"
         jumboMode="true"
         optimize="true"
-        revision="25.0.2"
-        sha1="09e98db5bd23b585f408d2db1a5fa35b47bde0ed">
-        <dex dex="/home/ryan/Desktop/SyncSMS/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_10c08f59fd4671fe364bfbf80810e011e03c1e06/classes.dex" />
+        revision="25.0.0"
+        sha1="0e301f24b283f14b564f660c9abe863af6be5896">
+        <dex dex="/Users/yatin/Codebase/android/project/SyncSMS/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_2541b7762f6f03c7e702e34fb405e752762ff32e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/yatin/Codebase/android/project/SyncSMS/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="/Users/yatin/Codebase/android/project/SyncSMS/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_d26336aba49700f7d5e52cfae48eda1967ac34fd/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/yatin/.android/build-cache/837df81b93ab60805ec138d752f16bf752fbba55/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="94fca868854457ede6df15c902938468c71d579e">
+        <dex dex="/Users/yatin/Codebase/android/project/SyncSMS/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c4c15bf364a792fc06a15e703b3fc75f2e488c1c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/yatin/.android/build-cache/19f9f1cb0547b7ec3d3918c74f02df28e93167d6/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="461cd433c2723981c7536d60acfcf3d86f3105fb">
+        <dex dex="/Users/yatin/Codebase/android/project/SyncSMS/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_db08e8d8f751464171eb7d17948f5acdcae414e4/classes.dex" />
     </item>
 
 </items>
