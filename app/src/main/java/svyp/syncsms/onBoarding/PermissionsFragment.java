@@ -45,25 +45,6 @@ public class PermissionsFragment extends Fragment
     }
 
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case Constants.RC_PERMISSIONS_ON_BOARDING_ACTIVITY: {
-                ArraySet<String> unGranted = new ArraySet<>();
-                for (int i = 0; i < grantResults.length; i++) {
-                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                        unGranted.add(permissions[i]);
-                    }
-                }
-                if (unGranted.isEmpty()) {
-                    startActivity(new Intent(getActivity(), MainActivity.class));
-                    getActivity().finish();
-                }
-            }
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_grant:

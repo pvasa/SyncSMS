@@ -38,4 +38,8 @@ public class Utils {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
     }
 
+    public static boolean isSignedIn(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Constants.PREF_SIGNED_IN, false);
+    }
+
 }

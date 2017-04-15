@@ -1,12 +1,14 @@
 package svyp.syncsms.onBoarding;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.util.ArraySet;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -168,10 +170,30 @@ public class OnBoardingActivity extends AppCompatActivity
             if (acct != null) {
                 Utils.putStringPreference(this, Constants.PREF_USER_ID, acct.getId());
             }
+            Utils.putBoolPreference(this, Constants.PREF_SIGNED_IN, true);
             signInFragment.signedIn(true);
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
         } else {
             signInFragment.signedIn(false);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Constants.RC_PERMISSIONS_ON_BOARDING_ACTIVITY: {
+                ArraySet<String> unGranted = new ArraySet<>();
+                for (int i = 0; i < grantResults.length; i++) {
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        unGranted.add(permissions[i]);
+                    }
+                }
+                if (unGranted.isEmpty()) {
+                    startActivity(new Intent(this, MainActivity.class));
+                    finish();
+                }
+            }
         }
     }
 

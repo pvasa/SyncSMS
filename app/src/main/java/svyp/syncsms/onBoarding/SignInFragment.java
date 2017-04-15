@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import svyp.syncsms.R;
+import svyp.syncsms.Utils;
 
 public class SignInFragment extends Fragment
         implements View.OnClickListener {
@@ -35,6 +36,9 @@ public class SignInFragment extends Fragment
 
         btnSignIn = (Button) rootView.findViewById(R.id.btn_sign_in);
         btnSignIn.setOnClickListener(this);
+
+        if (Utils.isSignedIn(getActivity())) btnSignIn.setVisibility(View.INVISIBLE);
+        else btnSignIn.setVisibility(View.VISIBLE);
 
         return rootView;
     }
