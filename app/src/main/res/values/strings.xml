@@ -11,10 +11,10 @@
     <string name="btn_grant">Grant</string>
     <string name="btn_sign_in">Sign In</string>
     <string name="title_fragment_sign_in">Never miss anything</string>
-    <string name="message_fragment_sign_in">Sync all the important messages with your Google account and never worry about losing a single message.</string>
-    <string name="message_fragment_make_default">To make your social experience smoother and smarter, set SyncSMS as your default messaging app.</string>
+    <string name="message_fragment_sign_in">Sync all important messages with your Google account and never worry about losing them ever.</string>
+    <string name="message_fragment_make_default">Make your experience smoother and smarter by setting SyncSMS as your default messaging app.</string>
     <string name="title_fragment_make_default">Always stay connected</string>
     <string name="btn_exit">Exit</string>
-    <string name="title_fragment_permissions">Permissions required</string>
+    <string name="title_fragment_permissions">Last thing - Permissions</string>
     <string name="message_fragment_permissions">For SyncSMS to function correctly, it requires your permission to access SMS, Phone and Contacts.</string>
 </resources>

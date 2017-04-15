@@ -7,25 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import svyp.syncsms.Constants;
 import svyp.syncsms.R;
 import svyp.syncsms.Utils;
 
-public class SignInFragment extends Fragment
-        implements View.OnClickListener {
+public class SignInFragment extends Fragment implements View.OnClickListener {
 
-    private final String TAG = getClass().getName();
-
-    private static final String ARG_SECTION_NUMBER = "section_number";
     public static final String TITLE = "Introduction";
 
     private Button btnSignIn;
 
-    public static SignInFragment newInstance(int sectionNumber) {
-        SignInFragment fragment = new SignInFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
+    public SignInFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putCharSequence(Constants.KEY_TITLE, TITLE);
+        setArguments(bundle);
     }
 
     @Override

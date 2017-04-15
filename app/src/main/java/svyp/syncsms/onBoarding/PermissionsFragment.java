@@ -2,11 +2,8 @@ package svyp.syncsms.onBoarding;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.ArraySet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +13,14 @@ import svyp.syncsms.MainActivity;
 import svyp.syncsms.R;
 import svyp.syncsms.Utils;
 
-public class PermissionsFragment extends Fragment
-        implements View.OnClickListener {
+public class PermissionsFragment extends Fragment implements View.OnClickListener {
 
-    private final String TAG = getClass().getName();
-
-    private static final String ARG_SECTION_NUMBER = "section_number";
     public static final String TITLE = "Request permissions";
 
-    public static PermissionsFragment newInstance(int sectionNumber) {
-        PermissionsFragment fragment = new PermissionsFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
+    public PermissionsFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putCharSequence(Constants.KEY_TITLE, TITLE);
+        setArguments(bundle);
     }
 
     @Override

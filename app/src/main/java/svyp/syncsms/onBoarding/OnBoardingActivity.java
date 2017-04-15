@@ -22,6 +22,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.rd.PageIndicatorView;
 
+import java.util.ArrayList;
+
 import svyp.syncsms.Constants;
 import svyp.syncsms.MainActivity;
 import svyp.syncsms.R;
@@ -33,6 +35,8 @@ public class OnBoardingActivity extends AppCompatActivity
     private SignInFragment signInFragment;
     private MakeDefaultFragment makeDefaultFragment;
     private PermissionsFragment permissionsFragment;
+
+    private ArrayList<Fragment> fragments;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -85,6 +89,11 @@ public class OnBoardingActivity extends AppCompatActivity
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+        fragments = new ArrayList<>();
+        fragments.add(signInFragment = new SignInFragment());
+        fragments.add(makeDefaultFragment = new MakeDefaultFragment());
+        fragments.add(permissionsFragment = new PermissionsFragment());
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -117,33 +126,17 @@ public class OnBoardingActivity extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return signInFragment = SignInFragment.newInstance(position + 1);
-                case 1:
-                    return makeDefaultFragment = MakeDefaultFragment.newInstance(position + 1);
-                case 2:
-                    return permissionsFragment = PermissionsFragment.newInstance(position + 1);
-            }
-            return new Fragment();
+            return fragments.get(position);
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return fragments.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return SignInFragment.TITLE;
-                case 1:
-                    return MakeDefaultFragment.TITLE;
-                case 2:
-                    return PermissionsFragment.TITLE;
-            }
-            return null;
+            return fragments.get(position).getArguments().getCharSequence(Constants.KEY_TITLE);
         }
     }
 
