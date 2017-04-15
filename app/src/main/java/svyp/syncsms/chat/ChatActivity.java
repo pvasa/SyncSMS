@@ -54,7 +54,7 @@ public class ChatActivity extends AppCompatActivity {
                         Manifest.permission.SEND_SMS,
                         Manifest.permission.READ_CONTACTS
                 },
-                this, Constants.RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY);
+                this, Constants.RC_PERMISSIONS_CONTACTS_ACTIVITY);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_messages);
 
@@ -129,7 +129,7 @@ public class ChatActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(
             int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case Constants.RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY: {
+            case Constants.RC_PERMISSIONS_CONTACTS_ACTIVITY: {
                 ArraySet<String> unGranted = new ArraySet<>();
                 for (int i = 0; i < grantResults.length; i++) {
                     if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {

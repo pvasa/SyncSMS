@@ -1,4 +1,4 @@
-package svyp.syncsms.newMessage;
+package svyp.syncsms.contacts;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -21,7 +21,7 @@ import svyp.syncsms.Utils;
 
 public class ContactsActivity extends AppCompatActivity {
 
-    private static final String TAG = ContactsActivity.class.getName();
+    private final String TAG = ContactsActivity.class.getName();
 
     private RecyclerView mRVContacts, mRVSendTo;
     private RecyclerView.Adapter mAdapterContacts, mAdapterSendTo;
@@ -45,7 +45,7 @@ public class ContactsActivity extends AppCompatActivity {
                         Manifest.permission.SEND_SMS,
                         Manifest.permission.READ_CONTACTS
                 },
-                this, Constants.RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY);
+                this, Constants.RC_PERMISSIONS_CONTACTS_ACTIVITY);
 
         mRVSendTo = (RecyclerView) findViewById(R.id.rv_send_to);
         mRVSendTo.setHasFixedSize(true);
@@ -84,7 +84,7 @@ public class ContactsActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(
             int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case Constants.RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY: {
+            case Constants.RC_PERMISSIONS_CONTACTS_ACTIVITY: {
                 ArraySet<String> unGranted = new ArraySet<>();
                 for (int i = 0; i < grantResults.length; i++) {
                     if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {

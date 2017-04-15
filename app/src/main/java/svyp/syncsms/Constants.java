@@ -8,9 +8,18 @@ import svyp.syncsms.models.Contact;
 import svyp.syncsms.models.Message;
 
 public class Constants {
-    public static final int RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY = 0;
+    public static final int RC_PERMISSIONS_CONTACTS_ACTIVITY = 0;
+    public static final int RC_PERMISSIONS_ON_BOARDING_ACTIVITY = 1;
+    public static final int RC_SIGN_IN = 2;
 
     public static final String KEY_TITLE = "title";
+
+    public static final String PREF_VERSION_CODE = "version_code";
+    public static final String PREF_USER_ID = "user_id";
+
+    public static final int VC_DOES_NOT_EXIST = -1;
+    public static final int VC_1= 1;
+    public static final int VC_2= 2;
 
     public static final List<Contact> CONTACTS = new ArrayList<Contact>() {{
         add(new Contact("Ryan", "6476666666"));
