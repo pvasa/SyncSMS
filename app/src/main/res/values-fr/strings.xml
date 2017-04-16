@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">SyncSMS</string>
     <string name="action_settings">Paramètres</string>
-    <string name="ed_new_message">Nouveau message</string>
+    <string name="section_format">Bonjour monde de la section: %1$d</string>
+    <string name="ed_new_message">Tapez le message ici</string>
     <string name="cd_user_picture">Photo de l\'utilisateur</string>
     <string name="item_title_search">Chercher</string>
+    <string name="iv_message_status">Statut du message</string>
+    <string name="btn_make_default">Faire défaut</string>
+    <string name="btn_grant">Subvention</string>
+    <string name="title_fragment_sign_in">Never miss anything</string>
+    <string name="title_fragment_make_default">Always stay connected</string>
+    <string name="title_fragment_permissions">Permissions required</string>
+    <string name="message_fragment_permissions">For SyncSMS to function correctly, it requires your permission to access SMS, Phone and Contacts.</string>
 </resources>
