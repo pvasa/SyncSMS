@@ -38,11 +38,12 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         <ImageView
-            android:layout_width="256dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="100"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/secure_cloud" />
+            android:layout_gravity="center"
+            android:src="@drawable/secure_cloud"
+            android:contentDescription="@string/iv_cd_secure_cloud" />
 
         <Button
             android:id="@+id/btn_sign_in"

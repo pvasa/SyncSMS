@@ -42,7 +42,7 @@
                 android:id="@+id/iv_status"
                 android:layout_width="12sp"
                 android:layout_height="12sp"
-                android:src="@drawable/tick_delivered"
+                android:src="@drawable/tick_sent"
                 android:layout_marginTop="2dp"
                 android:layout_marginStart="4dp"
                 android:contentDescription="@string/iv_message_status" />
