@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        debug {
-            keyAlias 'debugkey'
-            keyPassword 'Ryan@D3bug'
-            storeFile file('/home/ryan/Android/KeyStoreGlobal.jks')
-            storePassword 'Ryan@K3ystore'
-        }
-    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
