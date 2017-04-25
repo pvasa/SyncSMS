@@ -1,8 +1,8 @@
 package svyp.syncsms;
 
-import svyp.syncsms.models.Message;
+import svyp.syncsms.models.Conversation;
 
 interface MainInterface {
-    void archive(Message message);
-    void unArchive(Message message);
+    void archive(Conversation conversation);
+    void unArchive(Conversation conversation);
 }

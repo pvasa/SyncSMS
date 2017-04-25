@@ -41,6 +41,7 @@ public class PermissionsFragment extends Fragment implements View.OnClickListene
             case R.id.btn_grant:
                 if (Utils.checkPermissions(
                         new String[] {
+                                Manifest.permission.READ_SMS,
                                 Manifest.permission.SEND_SMS,
                                 Manifest.permission.READ_CONTACTS
                         },

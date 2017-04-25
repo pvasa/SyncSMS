@@ -1,20 +1,25 @@
 package svyp.syncsms.models;
 
-import java.util.List;
-
 public class Message {
 
-    public List<Contact> contacts;
-    public String message;
-    public String date;
+    public int _id;
+    public int threadId;
+    public int type;
+    public String address;
+    public String body;
+    public long date;
+    public long dateSent;
     public boolean read;
-    public int unreadCount;
 
-    public Message(List<Contact> contacts, String message, String date) {
-        this.contacts = contacts;
-        this.message = message;
+    public Message(int _id, int threadId, int type, String address, String body,
+                   long date, long dateSent, boolean read) {
+        this._id = _id;
+        this.threadId = threadId;
+        this.type = type;
+        this.address = address;
+        this.body = body;
         this.date = date;
-        this.read = false;
-        this.unreadCount = 1;
+        this.dateSent = dateSent;
+        this.read = read;
     }
 }

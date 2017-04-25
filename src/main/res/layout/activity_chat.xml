@@ -37,38 +37,39 @@
             android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="10"
-            app:stackFromEnd="true" />
+            android:layout_weight="9"
+            app:stackFromEnd="true"
+            app:reverseLayout="true" />
 
         <RelativeLayout
+            android:id="@+id/rl_new_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_send_sms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/btn_send_message"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_margin="16dp"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="8dp"
                 android:layout_centerVertical="true"
-                app:fabSize="normal"
-                app:srcCompat="@drawable/ic_send_white_48dp" />
+                android:background="@drawable/ic_send_button" />
 
             <EditText
                 android:id="@+id/ed_new_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/fab_send_sms"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="8dp"
+                android:layout_toStartOf="@id/btn_send_message"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:layout_centerVertical="true"
                 android:inputType="textCapSentences|textMultiLine"
                 android:textColor="@color/colorPrimaryText"
                 android:textColorHint="@color/colorSecondaryText"
                 android:textSize="16sp"
-                android:background="@drawable/bubble_sent_new"
+                android:background="@drawable/bubble_sent"
                 android:hint="@string/ed_new_message" />
 
         </RelativeLayout>

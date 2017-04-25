@@ -1,38 +1,35 @@
 {
   "project_info": {
-    "project_number": "515519938262",
-    "firebase_url": "https://syncsms-da230.firebaseio.com",
-    "project_id": "syncsms-da230",
-    "storage_bucket": "syncsms-da230.appspot.com"
+    "project_number": "279972632696",
+    "firebase_url": "https://syncsms-96c70.firebaseio.com",
+    "project_id": "syncsms-96c70",
+    "storage_bucket": "syncsms-96c70.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:515519938262:android:b988cd29f7694657",
+        "mobilesdk_app_id": "1:279972632696:android:b988cd29f7694657",
         "android_client_info": {
           "package_name": "svyp.syncsms"
         }
       },
       "oauth_client": [
         {
-          "client_id": "515519938262-p2iois8sdkjgqupvgm7gfk5m7bivre9s.apps.googleusercontent.com",
+          "client_id": "279972632696-gck36e5nv4p5jn7eg0sksrpsvc1oucl9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "svyp.syncsms",
-            "certificate_hash": "23d8b5047a5581d87aaf54d53db927b3e36fb2e7"
+            "certificate_hash": "544ee61639a5bd7b1995f3923da1f7b8da15b2ff"
           }
         },
         {
-          "client_id": "515519938262-d218fdcc94mjmm3kerra76n4pfb5d8t1.apps.googleusercontent.com",
+          "client_id": "279972632696-4e9188ndu3v3dbg65hktf53peso5muid.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBCx8o5w9AMLRI-MtRF7vGzU2wM2sTiGOQ"
-        },
-        {
-          "current_key": "AIzaSyC-h0Dk_JcUacCd3_cNqoP7Ww_AQ_qxcJE"
+          "current_key": "AIzaSyCFH9QKldd3-pmWg5-PDL3f6todFEnn04g"
         }
       ],
       "services": {
@@ -43,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "515519938262-d218fdcc94mjmm3kerra76n4pfb5d8t1.apps.googleusercontent.com",
+              "client_id": "279972632696-4e9188ndu3v3dbg65hktf53peso5muid.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

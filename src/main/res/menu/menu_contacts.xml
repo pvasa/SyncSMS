@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/ic_add_white_24dp"
+        android:icon="@drawable/ic_add_white_24px"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView"
         android:title="@string/item_title_search" />

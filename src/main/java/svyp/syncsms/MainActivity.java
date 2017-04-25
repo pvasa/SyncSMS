@@ -14,20 +14,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import svyp.syncsms.archived.ArchivedFragment;
-import svyp.syncsms.messages.MessagesFragment;
-import svyp.syncsms.models.Message;
 import svyp.syncsms.contacts.ContactsActivity;
+import svyp.syncsms.models.Conversation;
 
 public class MainActivity extends AppCompatActivity
         implements MainInterface {
 
-    private MessagesFragment messagesFragment;
+    private ConversationsFragment conversationsFragment;
     private ArchivedFragment archivedFragment;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * messages for each of the sections. We use a
+     * conversations for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         toolbarTitle = toolbar.getTitle().toString();
 
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_new_conversation);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        appendToolBarTitle(" - " + MessagesFragment.TITLE);
+                        appendToolBarTitle(" - " + ConversationsFragment.TITLE);
                         fab.show();
                         break;
                     case 1:
@@ -110,13 +108,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void archive(Message message) {
-        archivedFragment.addMessage(message);
+    public void archive(Conversation conversation) {
+        archivedFragment.addConversation(conversation);
     }
 
     @Override
-    public void unArchive(Message message) {
-        messagesFragment.addMessage(message);
+    public void unArchive(Conversation conversation) {
+        conversationsFragment.addConversation(conversation);
     }
 
     /**
@@ -133,7 +131,7 @@ public class MainActivity extends AppCompatActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return messagesFragment = MessagesFragment.newInstance(position + 1);
+                    return conversationsFragment = ConversationsFragment.newInstance(position + 1);
                 case 1:
                     return archivedFragment = ArchivedFragment.newInstance(position + 1);
             }
@@ -149,7 +147,7 @@ public class MainActivity extends AppCompatActivity
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return MessagesFragment.TITLE;
+                    return ConversationsFragment.TITLE;
                 case 1:
                     return ArchivedFragment.TITLE;
             }

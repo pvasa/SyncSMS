@@ -8,6 +8,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArraySet;
 
+import org.joda.time.DateTime;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import svyp.syncsms.models.Message;
+
 public class Utils {
 
     public static boolean checkPermissions(String[] permissions, Activity activity, int requestCode) {
@@ -42,4 +50,30 @@ public class Utils {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Constants.PREF_SIGNED_IN, false);
     }
 
+    public static String processDateTime(long milliseconds) {
+
+        DateTime dtCurrent = DateTime.now();
+        DateTime dtOfMessage = new DateTime(milliseconds);
+
+        SimpleDateFormat sdf;
+        if (dtOfMessage.getYear() != dtCurrent.getYear()) { // older than an year - include year
+            sdf = new SimpleDateFormat("yyyy, MMM dd, HH:mm", Locale.CANADA);
+        } else if (dtOfMessage.getWeekOfWeekyear() != dtCurrent.getWeekOfWeekyear()) { // older than a week/month - include month
+            sdf = new SimpleDateFormat("MMM dd, HH:mm", Locale.CANADA);
+        } else if (dtOfMessage.getDayOfWeek() != dtCurrent.getDayOfWeek()) { // older than a day - include weekday
+            sdf = new SimpleDateFormat("E, HH:mm", Locale.CANADA);
+        } else { // less than a day
+            sdf = new SimpleDateFormat("HH:mm", Locale.CANADA);
+        }
+
+        return sdf.format(new Date(milliseconds));
+    }
+
+    public static int isSimilarType(Message m1, Message m2) {
+        if (Constants.GROUP_SENT.contains(m1.type) && Constants.GROUP_SENT.contains(m2.type))
+            return Constants.MT_S;
+        else if (Constants.GROUP_RECEIVED.contains(m1.type) && Constants.GROUP_RECEIVED.contains(m2.type))
+            return Constants.MT_R;
+        else return -1;
+    }
 }

@@ -9,26 +9,26 @@ import android.widget.TextView;
 import java.util.List;
 
 import svyp.syncsms.R;
-import svyp.syncsms.models.Message;
+import svyp.syncsms.models.Contact;
 
 class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
 
-    private List<Message> mDataset;
+    private List<Contact> mDataset;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        CardView messageCardView;
-        TextView tvMessage, tvDate;
+        CardView contactCardView;
+        TextView tvName, tvNumber;
 
         ViewHolder(CardView v) {
             super(v);
-            messageCardView = v;
-            tvMessage = (TextView) v.findViewById(R.id.tv_message);
-            tvDate = (TextView) v.findViewById(R.id.tv_date);
+            contactCardView = v;
+            tvName = (TextView) v.findViewById(R.id.tv_message);
+            tvNumber = (TextView) v.findViewById(R.id.tv_date);
         }
     }
 
-    ContactsAdapter(List<Message> mDataset) {
+    ContactsAdapter(List<Contact> mDataset) {
         this.mDataset = mDataset;
     }
 
@@ -36,15 +36,15 @@ class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
     public ContactsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         CardView v = (CardView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view_chat, parent, false);
+                .inflate(R.layout.cv_contact, parent, false);
 
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvMessage.setText(mDataset.get(position).message);
-        holder.tvDate.setText(mDataset.get(position).date);
+        holder.tvName.setText(mDataset.get(position).name);
+        holder.tvNumber.setText(mDataset.get(position).number);
     }
 
     @Override

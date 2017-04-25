@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/background</item>
         <item name="popupMenuStyle">@style/PopupMenu.Light</item>
         <item name="textAppearanceLargePopupMenu">@style/PopupMenu.Light.TextAppearanceLarge</item>
         <item name="textAppearanceSmallPopupMenu">@style/PopupMenu.Light.TextAppearanceSmall</item>

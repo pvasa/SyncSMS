@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
+import svyp.syncsms.TelephonyProvider;
 
 public class MakeDefaultFragment extends Fragment {
 
@@ -28,7 +29,7 @@ public class MakeDefaultFragment extends Fragment {
         rootView.findViewById(R.id.btn_make_default).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                TelephonyProvider.test(getActivity().getContentResolver());
             }
         });
         return rootView;

@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArraySet;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +17,12 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
+import svyp.syncsms.TelephonyProvider;
 import svyp.syncsms.Utils;
 
 public class ChatActivity extends AppCompatActivity {
@@ -30,10 +31,10 @@ public class ChatActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
 
     private EditText edNewMessage;
-    private FloatingActionButton fabNewMessage;
+    private Button btnSendMessage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Utils.checkPermissions(
                 new String[] {
+                        Manifest.permission.READ_SMS,
                         Manifest.permission.SEND_SMS,
                         Manifest.permission.READ_CONTACTS
                 },
@@ -64,6 +66,7 @@ public class ChatActivity extends AppCompatActivity {
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -73,45 +76,50 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        mAdapter = new ChatAdapter(Constants.MESSAGES);
+        mAdapter = new ChatAdapter(
+                TelephonyProvider.getSMSMessages(
+                        getContentResolver(), getIntent().getIntExtra(Constants.KEY_THREAD_ID, -1)));
         mRecyclerView.setAdapter(mAdapter);
-
-        fabNewMessage = (FloatingActionButton) findViewById(R.id.fab_send_sms);
-        edNewMessage = (EditText) findViewById(R.id.ed_new_message);
-        edNewMessage.requestFocus();
-
-        fabNewMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newMessage = edNewMessage.getText().toString();
-                SmsManager sms = SmsManager.getDefault();
-                if (newMessage.length() > 160) {
-                    sms.sendMultipartTextMessage(
-                            "6476189379", null, sms.divideMessage(newMessage), null, null);
-                } else {
-                    sms.sendTextMessage("6476189379", null, newMessage, null, null);
-                }
-                edNewMessage.setText("");
-            }
-        });
-        fabNewMessage.setClickable(false);
-
-        edNewMessage.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (count > 0) {
-                    fabNewMessage.setClickable(true);
-                } else {
-                    fabNewMessage.setClickable(false);
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
         mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
+
+        if (getIntent().getBooleanExtra(Constants.KEY_ARCHIVED, false)) {
+            findViewById(R.id.rl_new_message).setVisibility(View.GONE);
+        } else {
+            edNewMessage = (EditText) findViewById(R.id.ed_new_message);
+            edNewMessage.requestFocus();
+
+            btnSendMessage = (Button) findViewById(R.id.btn_send_message);
+            btnSendMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String newMessage = edNewMessage.getText().toString();
+                    SmsManager smsManager = SmsManager.getDefault();
+                    if (newMessage.length() > 160) {
+                        smsManager.sendMultipartTextMessage(
+                                "6476189379", null, smsManager.divideMessage(newMessage), null, null);
+                    } else {
+                        smsManager.sendTextMessage("6476189379", null, newMessage, null, null);
+                    }
+                    edNewMessage.setText("");
+                }
+            });
+            btnSendMessage.setClickable(false);
+
+            edNewMessage.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (count > 0) {
+                        btnSendMessage.setClickable(true);
+                    } else {
+                        btnSendMessage.setClickable(false);
+                    }
+                }
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        }
     }
 
     @Override

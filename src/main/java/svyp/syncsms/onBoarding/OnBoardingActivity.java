@@ -12,14 +12,7 @@ import android.support.v4.util.ArraySet;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.rd.PageIndicatorView;
 
 import java.util.ArrayList;
@@ -27,10 +20,9 @@ import java.util.ArrayList;
 import svyp.syncsms.Constants;
 import svyp.syncsms.MainActivity;
 import svyp.syncsms.R;
-import svyp.syncsms.Utils;
 
-public class OnBoardingActivity extends AppCompatActivity
-        implements GoogleApiClient.OnConnectionFailedListener {
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
+public class OnBoardingActivity extends AppCompatActivity {
 
     private SignInFragment signInFragment;
     private MakeDefaultFragment makeDefaultFragment;
@@ -38,11 +30,11 @@ public class OnBoardingActivity extends AppCompatActivity
 
     private ArrayList<Fragment> fragments;
 
-    private GoogleApiClient mGoogleApiClient;
+    private static final String TAG = OnBoardingActivity.class.getSimpleName();
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * messages for each of the sections. We use a
+     * conversations for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
@@ -55,19 +47,19 @@ public class OnBoardingActivity extends AppCompatActivity
      */
     private ViewPager mViewPager;
 
-    private boolean isFirstRun() {
+    private void handleIfFirstRun() {
         int vc = PreferenceManager.getDefaultSharedPreferences(this)
                 .getInt(Constants.PREF_VERSION_CODE, Constants.VC_DOES_NOT_EXIST);
         switch (vc) {
             case Constants.VC_DOES_NOT_EXIST:
-                return true;
+                break;
             case Constants.VC_1:
             case Constants.VC_2:
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
-                return false;
+                break;
             default:
-                return true;
+                break;
         }
     }
 
@@ -75,19 +67,6 @@ public class OnBoardingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_boarding);
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
 
         fragments = new ArrayList<>();
         fragments.add(signInFragment = new SignInFragment());
@@ -103,15 +82,10 @@ public class OnBoardingActivity extends AppCompatActivity
 
     }
 
-    void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, Constants.RC_SIGN_IN);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        isFirstRun();
+        handleIfFirstRun();
     }
 
     /**
@@ -140,35 +114,14 @@ public class OnBoardingActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "No internet connection.", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case Constants.RC_SIGN_IN:
-                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-                handleSignInResult(result);
-                break;
-        }
-    }
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        if (result.isSuccess()) {
-            GoogleSignInAccount acct = result.getSignInAccount();
-            if (acct != null) {
-                Utils.putStringPreference(this, Constants.PREF_USER_ID, acct.getId());
-            }
-            Utils.putBoolPreference(this, Constants.PREF_SIGNED_IN, true);
-            signInFragment.signedIn(true);
+    void gotoNextPage() {
+        if (mViewPager.getCurrentItem() < mSectionsPagerAdapter.getCount() - 1)
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
-        } else {
-            signInFragment.signedIn(false);
-        }
+    }
+
+    void gotoPreviousPage() {
+        if (mViewPager.getCurrentItem() > 0)
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
     }
 
     @Override

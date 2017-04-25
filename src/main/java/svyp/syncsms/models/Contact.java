@@ -1,9 +1,12 @@
 package svyp.syncsms.models;
 
+import java.util.List;
+
 public class Contact {
 
     public String name;
-    String number;
+    public String number;
+    public List<Message> messages;
 
     public Contact(String name, String number) {
         this.name = name;

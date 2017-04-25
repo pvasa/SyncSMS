@@ -1,6 +1,7 @@
 package svyp.syncsms.contacts;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,10 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
 import svyp.syncsms.Utils;
+import svyp.syncsms.chat.ChatActivity;
 
 public class ContactsActivity extends AppCompatActivity {
 
@@ -25,6 +28,7 @@ public class ContactsActivity extends AppCompatActivity {
 
     private RecyclerView mRVContacts, mRVSendTo;
     private RecyclerView.Adapter mAdapterContacts, mAdapterSendTo;
+    private Button btnNext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +59,16 @@ public class ContactsActivity extends AppCompatActivity {
         mAdapterSendTo = new SendToAdapter(Constants.CONTACTS);
         mRVSendTo.setAdapter(mAdapterSendTo);
 
+        btnNext = (Button) findViewById(R.id.btn_next);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ContactsActivity.this, ChatActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         mRVContacts = (RecyclerView) findViewById(R.id.rv_messages);
         mRVContacts.setHasFixedSize(true);
         mRVContacts.setLayoutManager(new LinearLayoutManager(this));
@@ -64,7 +78,7 @@ public class ContactsActivity extends AppCompatActivity {
                 mRVContacts.scrollToPosition(mAdapterContacts.getItemCount() - 1);
             }
         });
-        mAdapterContacts = new ContactsAdapter(Constants.MESSAGES);
+        mAdapterContacts = new ContactsAdapter(Constants.CONTACTS);
         mRVContacts.setAdapter(mAdapterContacts);
     }
 

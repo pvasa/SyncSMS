@@ -39,13 +39,14 @@
                 android:scrollbars="horizontal"
                 android:layout_weight="99" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="8dp"
                 android:layout_weight="1"
-                app:elevation="0dp"
-                app:fabSize="mini"
-                app:srcCompat="@drawable/ic_send_white_48dp" />
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/ic_navigate_next_white_36px" />
 
         </LinearLayout>
 
