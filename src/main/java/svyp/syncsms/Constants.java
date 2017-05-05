@@ -12,6 +12,7 @@ import svyp.syncsms.models.Contact;
 public class Constants {
     public static final int RC_PERMISSIONS_CONTACTS_ACTIVITY = 0;
     public static final int RC_PERMISSIONS_ON_BOARDING_ACTIVITY = 1;
+    public static final int RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY = 0;
     public static final int RC_SIGN_IN = 2;
 
     public static final String KEY_TITLE = "title";
