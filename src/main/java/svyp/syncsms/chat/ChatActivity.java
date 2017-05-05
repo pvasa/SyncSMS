@@ -2,35 +2,53 @@ package svyp.syncsms.chat;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArraySet;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.text.Editable;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.CharacterStyle;
+import android.text.style.TextAppearanceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
 import svyp.syncsms.TelephonyProvider;
 import svyp.syncsms.Utils;
+import svyp.syncsms.models.Message;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements Filterable {
 
     private static final String TAG = ChatActivity.class.getName();
 
+    private SearchView searchView;
+
+    private TextAppearanceSpan highlightSpan;
+    private TextAppearanceSpan normalSpan;
+
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private ChatAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
     private EditText edNewMessage;
@@ -58,13 +76,21 @@ public class ChatActivity extends AppCompatActivity {
                 },
                 this, Constants.RC_PERMISSIONS_CONTACTS_ACTIVITY);
 
+        ColorStateList colorStateListAccent =
+                new ColorStateList(new int[][]{new int[]{}}, new int[] {
+                        ContextCompat.getColor(this, R.color.colorAccent)
+                });
+        highlightSpan = new TextAppearanceSpan(null, Typeface.BOLD, -1, colorStateListAccent, null);
+        ColorStateList colorStateListPrimaryText =
+                new ColorStateList(new int[][]{new int[]{}}, new int[] {
+                        ContextCompat.getColor(this, R.color.colorPrimaryText)
+                });
+        normalSpan = new TextAppearanceSpan(null, Typeface.NORMAL, -1, colorStateListPrimaryText, null);
+
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_messages);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -123,14 +149,90 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
+    public Filter getFilter() {
+
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+
+                ArrayList<Message> mDataset = mAdapter.getDataset();
+                String[] constraintWords =
+                        constraint.toString().trim().toLowerCase(Locale.CANADA).split(" ");
+
+                for (int i = 0; i < mDataset.size(); i++) {
+
+                    Message message = mDataset.get(i);
+                    String bodyString = message.body.toString().trim().toLowerCase(Locale.CANADA);
+                    int startPos, endPos;
+                    boolean found = false;
+
+                    for (String word : constraintWords) {
+                        for (startPos = bodyString.indexOf(word);
+                             startPos > -1;
+                             startPos = bodyString.indexOf(word, startPos + 1)) {
+                            endPos = startPos + word.length();
+                            CharacterStyle characterStyle = CharacterStyle.wrap(highlightSpan);
+                            message.spans.add(characterStyle);
+                            message.body.setSpan(characterStyle,
+                                    startPos, endPos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            found = true;
+                        }
+                    }
+                    if (!found && !message.spans.isEmpty()) {
+                        for (CharacterStyle span : message.spans)
+                            message.body.removeSpan(span);
+                        message.spans.clear();
+                    }
+                    mDataset.set(i, message);
+                }
+                FilterResults results = new FilterResults();
+                results.values = mDataset;
+                results.count = mDataset.size();
+                return results;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                mAdapter.setDataset((ArrayList<Message>) results.values);
+            }
+        };
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_chat, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean show = super.onPrepareOptionsMenu(menu);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        getFilter().filter(query);
+                        return true;
+                    }
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        getFilter().filter(newText);
+                        return true;
+                    }
+                });
+        return show;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (searchView.isIconified()) super.onBackPressed();
+        else searchView.onActionViewCollapsed();
     }
 
     @Override

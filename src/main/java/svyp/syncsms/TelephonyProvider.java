@@ -2,15 +2,15 @@ package svyp.syncsms;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.provider.Telephony;
+import android.provider.Telephony.Sms;
+import android.text.SpannableString;
 import android.util.Log;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.HashSet;
 
 import svyp.syncsms.models.Conversation;
 import svyp.syncsms.models.Message;
@@ -33,36 +33,60 @@ public class TelephonyProvider {
         }
     };
 
-    public static List<Conversation> getAllConversations(ContentResolver contentResolver) {
-        List<Conversation> conversations = new ArrayList<>();
+    public static HashSet<Conversation> getAllConversations(ContentResolver contentResolver) {
+        HashSet<Conversation> conversations = new HashSet<>();
         try (Cursor result = contentResolver.query(
-                Telephony.MmsSms.CONTENT_CONVERSATIONS_URI, Constants.PROJECTION_CONVERSATION, null, null, null)) {
+                Sms.Conversations.CONTENT_URI, Constants.PROJECTION_CONVERSATION, null, null, null)) {
             if (result != null && result.moveToFirst()) {
                 do {
+                    int threadId = result.getInt(result.getColumnIndex(Constants.Columns.THREAD_ID.toString()));
+                    Message message = getLastSMSOfConversation(contentResolver, threadId);
                     Conversation conversation = new Conversation(
-                            result.getInt(result.getColumnIndex(Constants.Columns.THREAD_ID.toString())),
-                            result.getString(result.getColumnIndex(Constants.Columns.ADDRESS.toString())),
-                            result.getString(result.getColumnIndex(Constants.Columns.BODY.toString())),
-                            Math.max(result.getLong(result.getColumnIndex(Constants.Columns.DATE.toString())),
-                                    result.getLong(result.getColumnIndex(Constants.Columns.DATE_SENT.toString()))),
-                            result.getInt(result.getColumnIndex(Constants.Columns.READ.toString())) == 1
+                            threadId,
+                            message.address,
+                            result.getString(result.getColumnIndex(Constants.Columns.SNIPPET.toString())),
+                            Math.max(message.date, message.dateSent),
+                            message.read
                     );
                     conversations.add(conversation);
                 } while (result.moveToNext());
             }
-        }
-        Collections.sort(conversations, CONVERSATION_COMPARATOR);
+        } catch (Exception e) {e.printStackTrace();}
         return conversations;
     }
 
-    public static List<Message> getSMSMessages(ContentResolver contentResolver, int threadId) {
-        List<Message> messages = new ArrayList<>();
+    public static Message getLastSMSOfConversation(ContentResolver contentResolver, int threadId) {
+        Message message = null;
         try (Cursor result = contentResolver.query(
-                Telephony.Sms.CONTENT_URI,
+                Sms.CONTENT_URI,
                 Constants.PROJECTION_MESSAGE,
-                Telephony.Sms.THREAD_ID+"=?",
+                Sms.THREAD_ID + "=?",
                 new String[]{String.valueOf(threadId)},
-                null)) {
+                Sms.DEFAULT_SORT_ORDER)) {
+            if (result != null && result.moveToFirst()) {
+                message = new Message(
+                        result.getInt(result.getColumnIndex(Constants.Columns._ID.toString())),
+                        result.getInt(result.getColumnIndex(Constants.Columns.THREAD_ID.toString())),
+                        result.getInt(result.getColumnIndex(Constants.Columns.TYPE.toString())),
+                        result.getString(result.getColumnIndex(Constants.Columns.ADDRESS.toString())),
+                        new SpannableString(result.getString(result.getColumnIndex(Constants.Columns.BODY.toString()))),
+                        result.getLong(result.getColumnIndex(Constants.Columns.DATE.toString())),
+                        result.getLong(result.getColumnIndex(Constants.Columns.DATE_SENT.toString())),
+                        result.getInt(result.getColumnIndex(Constants.Columns.READ.toString())) == 1
+                );
+            }
+        } catch (Exception e) {e.printStackTrace();}
+        return message;
+    }
+
+    public static ArrayList<Message> getSMSMessages(ContentResolver contentResolver, int threadId) {
+        ArrayList<Message> messages = new ArrayList<>();
+        try (Cursor result = contentResolver.query(
+                Sms.CONTENT_URI,
+                Constants.PROJECTION_MESSAGE,
+                Sms.THREAD_ID+"=?",
+                new String[]{String.valueOf(threadId)},
+                "date ASC")) {
             if (result != null && result.moveToFirst()) {
                 do {
                     Message message = new Message(
@@ -70,17 +94,15 @@ public class TelephonyProvider {
                             result.getInt(result.getColumnIndex(Constants.Columns.THREAD_ID.toString())),
                             result.getInt(result.getColumnIndex(Constants.Columns.TYPE.toString())),
                             result.getString(result.getColumnIndex(Constants.Columns.ADDRESS.toString())),
-                            result.getString(result.getColumnIndex(Constants.Columns.BODY.toString())),
+                            new SpannableString(result.getString(result.getColumnIndex(Constants.Columns.BODY.toString()))),
                             result.getLong(result.getColumnIndex(Constants.Columns.DATE.toString())),
                             result.getLong(result.getColumnIndex(Constants.Columns.DATE_SENT.toString())),
                             result.getInt(result.getColumnIndex(Constants.Columns.READ.toString())) == 1
                     );
-                    Log.d("TAG", "date: " + message.date + " dateSent: " + message.dateSent);
                     messages.add(message);
                 } while (result.moveToNext());
             }
-        }
-        Collections.sort(messages, MESSAGE_COMPARATOR);
+        } catch (Exception e) {e.printStackTrace();}
         Message lastMessage = null;
         for (Message message : messages) {
             if (lastMessage != null) {
@@ -101,21 +123,20 @@ public class TelephonyProvider {
         return messages;
     }
 
-    public static List<Message> test(ContentResolver contentResolver) {
-        Cursor result = contentResolver.query(Telephony.MmsSms.CONTENT_URI, null, null, null, null);
-        if (result != null && result.moveToFirst()) {
-            do {
-                Log.e("next", "msg");
-                String[] names = result.getColumnNames();
-                for (String name : names) {
-                    int index = result.getColumnIndex(name);
-                    if (index > -1) {
-                        Log.d(name, "" + result.getString(index));
+    public static void test(ContentResolver contentResolver) {
+        try (Cursor result = contentResolver.query(Sms.Conversations.CONTENT_URI, null, null, null, null)) {
+            if (result != null && result.moveToFirst()) {
+                do {
+                    Log.d("********************", "********************");
+                    String[] names = result.getColumnNames();
+                    for (String name : names) {
+                        int index = result.getColumnIndex(name);
+                        if (index > -1) {
+                            Log.d("DATA", "Name: \"" + name + "\" Value: \"" + result.getString(index) + "\"");
+                        }
                     }
-                }
-            } while(result.moveToNext());
-            result.close();
-        }
-        return null;
+                } while (result.moveToNext());
+            }
+        } catch (Exception e) {e.printStackTrace();}
     }
 }

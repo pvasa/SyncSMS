@@ -1,6 +1,6 @@
 package svyp.syncsms.models;
 
-import java.util.List;
+import java.util.HashSet;
 
 public class Conversation {
 
@@ -10,7 +10,7 @@ public class Conversation {
     public long lastMessageDate;
     public boolean read;
     public int unreadCount;
-    public List<Message> messages;
+    public HashSet<Message> messages;
 
     public Conversation(int threadId, String address, String snippet, long lastMessageDate, boolean read) {
         this.threadId = threadId;
