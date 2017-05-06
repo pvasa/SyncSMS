@@ -1,7 +1,10 @@
 package svyp.syncsms;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.provider.Telephony;
 import android.util.Log;
 
@@ -12,12 +15,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import svyp.syncsms.models.Contact;
 import svyp.syncsms.models.Conversation;
 import svyp.syncsms.models.Message;
 
 public class TelephonyProvider {
-
-    private TelephonyProvider() {}
 
     public static final Comparator<Message> MESSAGE_COMPARATOR = new Comparator<Message>() {
         @Override
@@ -25,13 +27,15 @@ public class TelephonyProvider {
             return Math.max(o1.date, o1.dateSent) > Math.max(o2.date, o2.dateSent) ? 1 : -1;
         }
     };
-
     public static final Comparator<Conversation> CONVERSATION_COMPARATOR = new Comparator<Conversation>() {
         @Override
         public int compare(Conversation o1, Conversation o2) {
             return o1.lastMessageDate > o2.lastMessageDate ? -1 : 1;
         }
     };
+
+    private TelephonyProvider() {
+    }
 
     public static List<Conversation> getAllConversations(ContentResolver contentResolver) {
         List<Conversation> conversations = new ArrayList<>();
@@ -60,7 +64,7 @@ public class TelephonyProvider {
         try (Cursor result = contentResolver.query(
                 Telephony.Sms.CONTENT_URI,
                 Constants.PROJECTION_MESSAGE,
-                Telephony.Sms.THREAD_ID+"=?",
+                Telephony.Sms.THREAD_ID + "=?",
                 new String[]{String.valueOf(threadId)},
                 null)) {
             if (result != null && result.moveToFirst()) {
@@ -113,9 +117,40 @@ public class TelephonyProvider {
                         Log.d(name, "" + result.getString(index));
                     }
                 }
-            } while(result.moveToNext());
+            } while (result.moveToNext());
             result.close();
         }
         return null;
+    }
+
+    public static ArrayList<Contact> getAllContacts(ContentResolver cr) {
+        ArrayList<Contact> contacts = new ArrayList<>();
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                null, null, null,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+
+        if (cur.getCount() > 0) {
+            contacts = new ArrayList<>();
+            while (cur.moveToNext()) {
+                String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
+                if (cur.getInt(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                    Uri contactURI = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(id));
+                    Uri photoURI = Uri.withAppendedPath(contactURI, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+                    Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                            new String[]{id}, null);
+                    while (pCur.moveToNext()) {
+                        String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        contacts.add(new Contact(name, phoneNo, photoURI));
+//                        inputStream =null;
+                    }
+                    pCur.close();
+                }
+            }
+        }
+        return contacts;
     }
 }
