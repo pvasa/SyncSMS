@@ -7,6 +7,7 @@ import android.provider.MediaStore;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 import svyp.syncsms.R;
+import svyp.syncsms.customLayout.TransparentCircle;
 import svyp.syncsms.models.Contact;
 
 class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
@@ -42,9 +44,15 @@ class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
         holder.tvNumber.setText(mDataset.get(position).getNumber());
         Bitmap bitmap = loadContactPhoto(mDataset.get(position).getPhotoURI());
         if (bitmap != null) {
+            holder.ivUserIdentifier.setVisibility(View.GONE);
+            holder.ivUserImage.setVisibility(View.VISIBLE);
             holder.ivUserImage.setImageBitmap(bitmap);
         } else {
-            holder.ivUserImage.setImageResource(R.drawable.ic_person_outline_black_24dp);
+//            holder.ivUserImage.setImageResource(R.drawable.ic_person_outline_black_24dp);
+            holder.ivUserIdentifier.setVisibility(View.VISIBLE);
+            holder.ivUserImage.setVisibility(View.GONE);
+            holder.tvIdentifier.setText("A");
+
         }
     }
 
@@ -69,15 +77,18 @@ class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView contactCardView;
-        TextView tvName, tvNumber;
+        TextView tvName, tvNumber, tvIdentifier;
         ImageView ivUserImage;
+        TransparentCircle ivUserIdentifier;
 
         ViewHolder(CardView v) {
             super(v);
             contactCardView = v;
             tvName = (TextView) v.findViewById(R.id.user_name);
             tvNumber = (TextView) v.findViewById(R.id.user_number);
+            tvIdentifier = (TextView) v.findViewById(R.id.contact_identifier);
             ivUserImage = (ImageView) v.findViewById(R.id.iv_user_picture);
+            ivUserIdentifier = (TransparentCircle) v.findViewById(R.id.iv_user_identifier);
         }
     }
 }

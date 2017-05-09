@@ -1,7 +1,11 @@
 package svyp.syncsms;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
+import android.provider.Telephony;
 import android.provider.Telephony.Sms;
 import android.text.SpannableString;
 import android.util.Log;
@@ -12,10 +16,24 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 
+import svyp.syncsms.models.Contact;
 import svyp.syncsms.models.Conversation;
 import svyp.syncsms.models.Message;
 
 public class TelephonyProvider {
+
+    public static final Comparator<Message> MESSAGE_COMPARATOR = new Comparator<Message>() {
+        @Override
+        public int compare(Message o1, Message o2) {
+            return Math.max(o1.date, o1.dateSent) > Math.max(o2.date, o2.dateSent) ? 1 : -1;
+        }
+    };
+    public static final Comparator<Conversation> CONVERSATION_COMPARATOR = new Comparator<Conversation>() {
+        @Override
+        public int compare(Conversation o1, Conversation o2) {
+            return o1.lastMessageDate > o2.lastMessageDate ? -1 : 1;
+        }
+    };
 
     private TelephonyProvider() {}
 
@@ -139,5 +157,36 @@ public class TelephonyProvider {
                 } while (result.moveToNext());
             }
         } catch (Exception e) {e.printStackTrace();}
+    }
+
+    public static ArrayList<Contact> getAllContacts(ContentResolver cr) {
+        ArrayList<Contact> contacts = new ArrayList<>();
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                null, null, null,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+
+        if (cur.getCount() > 0) {
+            contacts = new ArrayList<>();
+            while (cur.moveToNext()) {
+                String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
+                if (cur.getInt(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                    Uri contactURI = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(id));
+                    Uri photoURI = Uri.withAppendedPath(contactURI, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+                    Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                            new String[]{id}, null);
+                    while (pCur.moveToNext()) {
+                        String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        contacts.add(new Contact(name, phoneNo, photoURI));
+//                        inputStream =null;
+                    }
+                    pCur.close();
+                }
+            }
+        }
+        return contacts;
     }
 }

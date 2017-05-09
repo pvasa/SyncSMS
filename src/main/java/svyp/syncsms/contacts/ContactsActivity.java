@@ -6,6 +6,7 @@ import android.content.ContentUris;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -27,11 +28,13 @@ import android.view.View;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
+import svyp.syncsms.TelephonyProvider;
 import svyp.syncsms.Utils;
 import svyp.syncsms.models.Contact;
 
@@ -70,12 +73,6 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
         mRVContacts = (RecyclerView) findViewById(R.id.rv_messages);
         mRVContacts.setHasFixedSize(true);
         mRVContacts.setLayoutManager(new LinearLayoutManager(this));
-        mRVContacts.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                mRVContacts.scrollToPosition(mAdapterContacts.getItemCount() - 1);
-            }
-        });
 
         checkPermission();
     }
@@ -83,7 +80,7 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
     private void checkPermission() {
         String[] perms = {Manifest.permission.SEND_SMS, Manifest.permission.READ_CONTACTS};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            setUpContactList();
+            new LoadContacts().execute();
         } else {
             Utils.checkPermissions(
                     new String[]{
@@ -94,37 +91,27 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
         }
     }
 
-    private void setUpContactList() {
-        ContentResolver cr = getContentResolver();
-        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+    private class LoadContacts extends AsyncTask<Void, Void, Boolean>{
 
-        if (cur.getCount() > 0) {
-            contacts = new ArrayList<>();
-            while (cur.moveToNext()) {
-                String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-
-                if (cur.getInt(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-                    Uri contactURI = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(id));
-                    Uri photoURI = Uri.withAppendedPath(contactURI, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-                    Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                            new String[]{id}, null);
-                    while (pCur.moveToNext()) {
-                        String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        contacts.add(new Contact(name, phoneNo, photoURI));
-//                        inputStream =null;
-                    }
-                    pCur.close();
-                }
-            }
-            mAdapterContacts = new ContactsAdapter(contacts, this);
-            mRVContacts.setAdapter(mAdapterContacts);
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            contacts = TelephonyProvider.getAllContacts(getContentResolver());
+            return !contacts.isEmpty();
         }
 
+        protected void onPostExecute(Boolean result){
+            super.onPostExecute(result);
+            if(result && mRVContacts!=null){
+                mAdapterContacts = new ContactsAdapter(contacts, ContactsActivity.this);
+                mRVContacts.setAdapter(mAdapterContacts);
+                mRVContacts.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                    @Override
+                    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                        mRVContacts.scrollToPosition(mAdapterContacts.getItemCount() - 1);
+                    }
+                });
+            }
+        }
     }
 
     @Override
