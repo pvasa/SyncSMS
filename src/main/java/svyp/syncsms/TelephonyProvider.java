@@ -55,7 +55,7 @@ public class TelephonyProvider {
         return conversations;
     }
 
-    public static Message getLastSMSOfConversation(ContentResolver contentResolver, int threadId) {
+    private static Message getLastSMSOfConversation(ContentResolver contentResolver, int threadId) {
         Message message = null;
         try (Cursor result = contentResolver.query(
                 Sms.CONTENT_URI,
@@ -69,7 +69,8 @@ public class TelephonyProvider {
                         result.getInt(result.getColumnIndex(Constants.Columns.THREAD_ID.toString())),
                         result.getInt(result.getColumnIndex(Constants.Columns.TYPE.toString())),
                         result.getString(result.getColumnIndex(Constants.Columns.ADDRESS.toString())),
-                        new SpannableString(result.getString(result.getColumnIndex(Constants.Columns.BODY.toString()))),
+                        new SpannableString(
+                                result.getString(result.getColumnIndex(Constants.Columns.BODY.toString()))),
                         result.getLong(result.getColumnIndex(Constants.Columns.DATE.toString())),
                         result.getLong(result.getColumnIndex(Constants.Columns.DATE_SENT.toString())),
                         result.getInt(result.getColumnIndex(Constants.Columns.READ.toString())) == 1

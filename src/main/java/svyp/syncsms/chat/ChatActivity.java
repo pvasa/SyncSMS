@@ -19,15 +19,13 @@ import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextWatcher;
-import android.text.style.CharacterStyle;
 import android.text.style.TextAppearanceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -38,14 +36,15 @@ import svyp.syncsms.TelephonyProvider;
 import svyp.syncsms.Utils;
 import svyp.syncsms.models.Message;
 
-public class ChatActivity extends AppCompatActivity implements Filterable {
+public class ChatActivity extends AppCompatActivity {
 
     private static final String TAG = ChatActivity.class.getName();
 
     private SearchView searchView;
 
-    private TextAppearanceSpan highlightSpan;
-    private TextAppearanceSpan normalSpan;
+    private ColorStateList colorStateListAccent;
+
+    private String address;
 
     private RecyclerView mRecyclerView;
     private ChatAdapter mAdapter;
@@ -76,17 +75,12 @@ public class ChatActivity extends AppCompatActivity implements Filterable {
                 },
                 this, Constants.RC_PERMISSIONS_CONTACTS_ACTIVITY);
 
-        ColorStateList colorStateListAccent =
+        address = getIntent().getStringExtra(Constants.KEY_ADDRESS);
+
+        colorStateListAccent =
                 new ColorStateList(new int[][]{new int[]{}}, new int[] {
                         ContextCompat.getColor(this, R.color.colorAccent)
                 });
-        highlightSpan = new TextAppearanceSpan(null, Typeface.BOLD, -1, colorStateListAccent, null);
-        ColorStateList colorStateListPrimaryText =
-                new ColorStateList(new int[][]{new int[]{}}, new int[] {
-                        ContextCompat.getColor(this, R.color.colorPrimaryText)
-                });
-        normalSpan = new TextAppearanceSpan(null, Typeface.NORMAL, -1, colorStateListPrimaryText, null);
-
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_messages);
 
         mRecyclerView.setHasFixedSize(true);
@@ -118,15 +112,17 @@ public class ChatActivity extends AppCompatActivity implements Filterable {
             btnSendMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String newMessage = edNewMessage.getText().toString();
-                    SmsManager smsManager = SmsManager.getDefault();
-                    if (newMessage.length() > 160) {
-                        smsManager.sendMultipartTextMessage(
-                                "6476189379", null, smsManager.divideMessage(newMessage), null, null);
-                    } else {
-                        smsManager.sendTextMessage("6476189379", null, newMessage, null, null);
+                    if (Utils.checkSIM((LinearLayout) v.getParent().getParent())) {
+                        String newMessage = edNewMessage.getText().toString();
+                        SmsManager smsManager = SmsManager.getDefault();
+                        if (newMessage.length() > 160) {
+                            smsManager.sendMultipartTextMessage(
+                                    address, null, smsManager.divideMessage(newMessage), null, null);
+                        } else {
+                            smsManager.sendTextMessage(address, null, newMessage, null, null);
+                        }
+                        edNewMessage.setText("");
                     }
-                    edNewMessage.setText("");
                 }
             });
             btnSendMessage.setClickable(false);
@@ -148,55 +144,38 @@ public class ChatActivity extends AppCompatActivity implements Filterable {
         }
     }
 
-    @Override
-    public Filter getFilter() {
+    public void filter(CharSequence constraint) {
+        ArrayList<Message> mDataset = mAdapter.getDataset();
+        String[] constraintWords =
+                constraint.toString().trim().toLowerCase(Locale.CANADA).split(" ");
 
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
+        int i;
+        for (i = 0; i < mDataset.size(); i++) {
 
-                ArrayList<Message> mDataset = mAdapter.getDataset();
-                String[] constraintWords =
-                        constraint.toString().trim().toLowerCase(Locale.CANADA).split(" ");
+            Message message = mDataset.get(i);
+            String bodyString = message.body.toString().trim().toLowerCase(Locale.CANADA);
+            int startPos, endPos;
 
-                for (int i = 0; i < mDataset.size(); i++) {
+            if (!message.spans.isEmpty()) {
+                for (int s = message.spans.size() - 1; s > -1; s--)
+                    message.body.removeSpan(message.spans.get(s));
+                message.spans.clear();
+            }
 
-                    Message message = mDataset.get(i);
-                    String bodyString = message.body.toString().trim().toLowerCase(Locale.CANADA);
-                    int startPos, endPos;
-                    boolean found = false;
-
-                    for (String word : constraintWords) {
-                        for (startPos = bodyString.indexOf(word);
-                             startPos > -1;
-                             startPos = bodyString.indexOf(word, startPos + 1)) {
-                            endPos = startPos + word.length();
-                            CharacterStyle characterStyle = CharacterStyle.wrap(highlightSpan);
-                            message.spans.add(characterStyle);
-                            message.body.setSpan(characterStyle,
-                                    startPos, endPos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                            found = true;
-                        }
-                    }
-                    if (!found && !message.spans.isEmpty()) {
-                        for (CharacterStyle span : message.spans)
-                            message.body.removeSpan(span);
-                        message.spans.clear();
-                    }
-                    mDataset.set(i, message);
+            for (String word : constraintWords) {
+                for (startPos = bodyString.indexOf(word);
+                     startPos > -1;
+                     startPos = bodyString.indexOf(word, startPos + 1)) {
+                    endPos = startPos + word.length();
+                    TextAppearanceSpan span = getHighlightSpan();
+                    message.spans.add(span);
+                    message.body.setSpan(span, startPos, endPos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
-                FilterResults results = new FilterResults();
-                results.values = mDataset;
-                results.count = mDataset.size();
-                return results;
             }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                mAdapter.setDataset((ArrayList<Message>) results.values);
-            }
-        };
+            mDataset.set(i, message);
+        }
+        mAdapter.setDataset(mDataset);
+        mRecyclerView.scrollToPosition(i - 1);
     }
 
     @Override
@@ -212,12 +191,12 @@ public class ChatActivity extends AppCompatActivity implements Filterable {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
-                        getFilter().filter(query);
+                        filter(query);
                         return true;
                     }
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        getFilter().filter(newText);
+                        filter(newText);
                         return true;
                     }
                 });
@@ -251,5 +230,9 @@ public class ChatActivity extends AppCompatActivity implements Filterable {
                 }
             }
         }
+    }
+
+    private TextAppearanceSpan getHighlightSpan() {
+        return new TextAppearanceSpan(null, Typeface.BOLD, -1, colorStateListAccent, null);
     }
 }

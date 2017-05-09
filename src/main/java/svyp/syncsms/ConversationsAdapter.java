@@ -40,7 +40,6 @@ class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdapter.Vie
     ConversationsAdapter(HashSet<Conversation> mDataset, boolean archive) {
         this.archive = archive;
         this.mDataset = new SortedList<>(Conversation.class, new MSortedListAdapterCallback(this));
-
         this.mDataset.addAll(mDataset);
     }
 
@@ -89,6 +88,7 @@ class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdapter.Vie
                 Intent intent = new Intent(v.getContext(), ChatActivity.class);
                 intent.putExtra(Constants.KEY_TITLE, names.toString());
                 intent.putExtra(Constants.KEY_THREAD_ID, conversation.threadId);
+                intent.putExtra(Constants.KEY_ADDRESS, conversation.address);
                 intent.putExtra(Constants.KEY_ARCHIVED, archive);
                 v.getContext().startActivity(intent);
             }

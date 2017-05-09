@@ -18,6 +18,7 @@ public class Constants {
     public static final String KEY_TITLE = "title";
     public static final String KEY_ARCHIVED = "archived";
     public static final String KEY_THREAD_ID = Columns.THREAD_ID.toString();
+    public static final String KEY_ADDRESS = Columns.ADDRESS.toString();
 
     public static final String PREF_VERSION_CODE = "version_code";
     public static final String PREF_USER_ID = "user_id";

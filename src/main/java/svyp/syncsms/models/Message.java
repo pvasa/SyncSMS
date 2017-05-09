@@ -1,9 +1,9 @@
 package svyp.syncsms.models;
 
 import android.text.SpannableString;
-import android.text.style.CharacterStyle;
+import android.text.style.TextAppearanceSpan;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class Message {
 
@@ -15,7 +15,7 @@ public class Message {
     public long date;
     public long dateSent;
     public boolean read;
-    public HashSet<CharacterStyle> spans;
+    public ArrayList<TextAppearanceSpan> spans;
 
     public Message(int _id, int threadId, int type, String address, SpannableString body,
                    long date, long dateSent, boolean read) {
@@ -27,6 +27,6 @@ public class Message {
         this.date = date;
         this.dateSent = dateSent;
         this.read = read;
-        this.spans = new HashSet<>();
+        this.spans = new ArrayList<>();
     }
 }

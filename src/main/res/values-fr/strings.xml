@@ -14,4 +14,9 @@
     <string name="title_fragment_permissions">Permissions required</string>
     <string name="message_fragment_permissions">For SyncSMS to function correctly, it requires your permission to access SMS, Phone and Contacts.</string>
     <string name="iv_cd_secure_cloud">Center image for sign in page.</string>
+    <string name="snack_sim_absent">Please insert SIM to send message.</string>
+    <string name="snack_sim_network_locked">SIM is network locked. Please unlock to send message.</string>
+    <string name="snack_sim_pin_required">SIM pin required. Please unlock to send message.</string>
+    <string name="snack_sim_puk_required">SIM puk required. Please unlock to send message.</string>
+    <string name="snack_sim_unknown">SIM state unknown.</string>
 </resources>
