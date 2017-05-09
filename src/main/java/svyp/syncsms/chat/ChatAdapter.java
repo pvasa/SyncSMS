@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
@@ -15,8 +15,7 @@ import svyp.syncsms.models.Message;
 
 class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
-    private List<Message> mDataset;
-
+    private ArrayList<Message> mDataset;
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         View messageCardView;
@@ -30,7 +29,7 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
     }
 
-    ChatAdapter(List<Message> mDataset) {
+    ChatAdapter(ArrayList<Message> mDataset) {
         this.mDataset = mDataset;
     }
 
@@ -83,6 +82,15 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
     }
 
+    ArrayList<Message> getDataset() {
+        return mDataset;
+    }
+
+    void setDataset(ArrayList<Message> mDataset) {
+        this.mDataset = mDataset;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemViewType(int position) {
         return mDataset.get(position).type;
@@ -91,5 +99,9 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    public void add(Message message) {
+        mDataset.add(message);
     }
 }

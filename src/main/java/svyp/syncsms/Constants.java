@@ -18,6 +18,7 @@ public class Constants {
     public static final String KEY_TITLE = "title";
     public static final String KEY_ARCHIVED = "archived";
     public static final String KEY_THREAD_ID = Columns.THREAD_ID.toString();
+    public static final String KEY_ADDRESS = Columns.ADDRESS.toString();
 
     public static final String PREF_VERSION_CODE = "version_code";
     public static final String PREF_USER_ID = "user_id";
@@ -74,6 +75,7 @@ public class Constants {
         TYPE(Conversations.TYPE),
         ADDRESS(Conversations.ADDRESS),
         BODY(Conversations.BODY),
+        SNIPPET(Conversations.SNIPPET),
         DATE(Conversations.DATE),
         DATE_SENT(Conversations.DATE_SENT),
         READ(Conversations.READ);
@@ -91,12 +93,12 @@ public class Constants {
     }
 
     public static final String[] PROJECTION_CONVERSATION = new String[] {
-            Sms.Conversations.THREAD_ID,
-            Sms.Conversations.ADDRESS,
-            Sms.Conversations.BODY,
+            Conversations.THREAD_ID,
+            Conversations.SNIPPET/*,
+            Conversations.ADDRESS,
             Sms.DATE,
             Sms.DATE_SENT,
-            Sms.READ
+            Sms.READ*/
     };
 
     public static final String[] PROJECTION_MESSAGE = new String[] {

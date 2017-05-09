@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArraySet;
+import android.telephony.TelephonyManager;
+import android.view.View;
 
 import org.joda.time.DateTime;
 
@@ -75,5 +78,31 @@ public class Utils {
         else if (Constants.GROUP_RECEIVED.contains(m1.type) && Constants.GROUP_RECEIVED.contains(m2.type))
             return Constants.MT_R;
         else return -1;
+    }
+
+    public static boolean checkSIM(View v) {
+        Context context = v.getContext();
+        TelephonyManager telMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        int simState = telMgr.getSimState();
+        switch (simState) {
+            case TelephonyManager.SIM_STATE_ABSENT:
+                Snackbar.make(v, R.string.snack_sim_absent, Snackbar.LENGTH_SHORT).show();
+                return false;
+            case TelephonyManager.SIM_STATE_NETWORK_LOCKED:
+                Snackbar.make(v, R.string.snack_sim_network_locked, Snackbar.LENGTH_SHORT).show();
+                return false;
+            case TelephonyManager.SIM_STATE_PIN_REQUIRED:
+                Snackbar.make(v, R.string.snack_sim_pin_required, Snackbar.LENGTH_SHORT).show();
+                return false;
+            case TelephonyManager.SIM_STATE_PUK_REQUIRED:
+                Snackbar.make(v, R.string.snack_sim_puk_required, Snackbar.LENGTH_SHORT).show();
+                return false;
+            case TelephonyManager.SIM_STATE_READY:
+                return true;
+            case TelephonyManager.SIM_STATE_UNKNOWN:
+                Snackbar.make(v, R.string.snack_sim_unknown, Snackbar.LENGTH_SHORT).show();
+                return false;
+        }
+        return false;
     }
 }

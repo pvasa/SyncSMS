@@ -9,16 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import svyp.syncsms.models.Conversation;
 
 public class ConversationsFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     public static final String TITLE = "Messages";
-
-    private List<Conversation> conversations;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -45,9 +41,8 @@ public class ConversationsFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        conversations = TelephonyProvider.getAllConversations(getActivity().getContentResolver());
-
-        mAdapter = new ConversationsAdapter(conversations, false);
+        mAdapter = new ConversationsAdapter(
+                TelephonyProvider.getAllConversations(getActivity().getContentResolver()), false);
         mRecyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper.SimpleCallback simpleCallback =
