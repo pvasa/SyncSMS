@@ -72,7 +72,7 @@ public class Utils {
         return sdf.format(new Date(milliseconds));
     }
 
-    public static int isSimilarType(Message m1, Message m2) {
+    static int areMessagesSimilar(Message m1, Message m2) {
         if (Constants.GROUP_SENT.contains(m1.type) && Constants.GROUP_SENT.contains(m2.type))
             return Constants.MT_S;
         else if (Constants.GROUP_RECEIVED.contains(m1.type) && Constants.GROUP_RECEIVED.contains(m2.type))

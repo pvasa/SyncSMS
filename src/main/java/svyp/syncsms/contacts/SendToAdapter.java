@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import svyp.syncsms.R;
 import svyp.syncsms.models.Contact;
 
 class SendToAdapter extends RecyclerView.Adapter<SendToAdapter.ViewHolder> {
 
-    private List<Contact> mDataset;
+    private ArrayList<Contact> mDataset;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -31,15 +31,14 @@ class SendToAdapter extends RecyclerView.Adapter<SendToAdapter.ViewHolder> {
         }
     }
 
-    SendToAdapter(List<Contact> mDataset) {
+    SendToAdapter(ArrayList<Contact> mDataset) {
         this.mDataset = mDataset;
     }
 
     @Override
     public SendToAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.text_view_send_to, parent, false);
+                .inflate(R.layout.tv_send_to, parent, false);
         return new SendToAdapter.ViewHolder(v);
     }
 

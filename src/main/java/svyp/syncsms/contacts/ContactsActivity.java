@@ -1,14 +1,9 @@
 package svyp.syncsms.contacts;
 
 import android.Manifest;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArraySet;
@@ -19,19 +14,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import pub.devrel.easypermissions.EasyPermissions;
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
 import svyp.syncsms.TelephonyProvider;
@@ -43,7 +31,7 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
     private static final String TAG = ContactsActivity.class.getName();
 
     private RecyclerView mRVSendTo, mRVContacts;
-    private RecyclerView.Adapter mAdapterSendTo;
+    private RecyclerView.Adapter<SendToAdapter.ViewHolder> mAdapterSendTo;
     private ContactsAdapter mAdapterContacts;
     private ArrayList<Contact> contacts;
 
@@ -61,33 +49,25 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-
         mRVSendTo = (RecyclerView) findViewById(R.id.rv_send_to);
         mRVSendTo.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRVSendTo.setLayoutManager(layoutManager);
-        mAdapterSendTo = new SendToAdapter(Constants.CONTACTS);
+        mAdapterSendTo = new SendToAdapter(new ArrayList<Contact>());
         mRVSendTo.setAdapter(mAdapterSendTo);
 
         mRVContacts = (RecyclerView) findViewById(R.id.rv_messages);
         mRVContacts.setHasFixedSize(true);
         mRVContacts.setLayoutManager(new LinearLayoutManager(this));
 
-        checkPermission();
-    }
-
-    private void checkPermission() {
-        String[] perms = {Manifest.permission.SEND_SMS, Manifest.permission.READ_CONTACTS};
-        if (EasyPermissions.hasPermissions(this, perms)) {
+        if (Utils.checkPermissions(
+                new String[] {
+                        Manifest.permission.SEND_SMS,
+                        Manifest.permission.READ_CONTACTS
+                },
+                this, Constants.RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY)) {
             new LoadContacts().execute();
-        } else {
-            Utils.checkPermissions(
-                    new String[]{
-                            Manifest.permission.SEND_SMS,
-                            Manifest.permission.READ_CONTACTS
-                    },
-                    this, Constants.RC_PERMISSIONS_NEW_MESSAGE_ACTIVITY);
         }
     }
 
@@ -131,7 +111,6 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onRequestPermissionsResult(
             int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
@@ -145,32 +124,29 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
                 }
                 if (!unGranted.isEmpty()) {
                     finish();
+                } else {
+                    new LoadContacts().execute();
                 }
             }
         }
     }
 
     @Override
-    public boolean onQueryTextSubmit(String s) {
-        Log.d(TAG, "onQueryTextSubmit >> "+s);
-        return false;
-    }
+    public boolean onQueryTextSubmit(String s) {return false;}
 
     @Override
     public boolean onQueryTextChange(String s) {
-        Log.d(TAG, "onQueryTextChange >> "+s);
         filter(s);
-        return false;
+        return true;
     }
 
-    void filter(String text){
-        List<Contact> temp = new ArrayList();
-        for(Contact d: contacts){
-            if(d.getName().contains(text) || d.getNumber().contains(text)){
-                temp.add(d);
+    void filter(String text) {
+        ArrayList<Contact> temp = new ArrayList<>();
+        for(Contact contact : contacts) {
+            if(contact.getName().contains(text) || contact.getNumbers().contains(text)) {
+                temp.add(contact);
             }
         }
-        //update recyclerview
         mAdapterContacts.updateList(temp);
     }
 }

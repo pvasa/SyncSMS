@@ -3,11 +3,7 @@ package svyp.syncsms;
 import android.provider.Telephony.Sms;
 import android.provider.Telephony.Sms.Conversations;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-
-import svyp.syncsms.models.Contact;
 
 public class Constants {
     public static final int RC_PERMISSIONS_CONTACTS_ACTIVITY = 0;
@@ -111,9 +107,4 @@ public class Constants {
             Sms.READ,
             Sms.TYPE
     };
-
-    public static final List<Contact> CONTACTS = new ArrayList<Contact>() {{
-        add(new Contact("Ryan", "6476666666"));
-        add(new Contact("Priyank", "5195555555"));
-    }};
 }

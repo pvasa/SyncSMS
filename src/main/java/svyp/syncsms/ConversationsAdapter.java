@@ -146,11 +146,13 @@ class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdapter.Vie
         @Override
         public void onInserted(int position, int count) {
             notifyItemRangeInserted(position, count);
+            onChanged(position, count);
         }
 
         @Override
         public void onRemoved(int position, int count) {
             notifyItemRangeRemoved(position, count);
+            onChanged(position, count);
         }
 
         @Override

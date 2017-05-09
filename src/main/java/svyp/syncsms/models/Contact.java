@@ -2,32 +2,33 @@ package svyp.syncsms.models;
 
 import android.net.Uri;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Contact {
 
     public String name;
-    public String number;
+    public ArrayList<String> numbers;
     public List<Message> messages;
     public Uri photoURI;
 
-    public Contact(String name, String number, Uri photoURI) {
+    public Contact(String name, ArrayList<String> numbers, Uri photoURI) {
         this.name = name;
-        this.number = number;
+        this.numbers = numbers;
         this.photoURI = photoURI;
     }
 
-    public Contact(String name, String number) {
+    public Contact(String name, ArrayList<String> numbers) {
         this.name = name;
-        this.number = number;
+        this.numbers = numbers;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getNumber() {
-        return number;
+    public ArrayList<String> getNumbers() {
+        return numbers;
     }
 
     public List<Message> getMessages() {
