@@ -31,7 +31,7 @@ class NumbersAdapter extends RecyclerView.Adapter<NumbersAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.tv_numbers, parent, false);
+                .inflate(R.layout.ll_numbers, parent, false);
         return new NumbersAdapter.ViewHolder(v);
     }
 

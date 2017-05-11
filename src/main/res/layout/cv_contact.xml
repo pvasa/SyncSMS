@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,31 +13,28 @@
         android:background="@android:color/transparent"
         android:orientation="horizontal">
 
-        <svyp.syncsms.customLayout.TransparentCircle
-            android:id="@+id/iv_user_identifier"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="@dimen/fab_margin"
-            android:background="#00000000"
-            custom:drawBackground="#364b68">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_user_picture"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@color/colorPrimary"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="2dp" />
 
             <TextView
                 android:id="@+id/contact_identifier"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|center_horizontal"
-                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="@android:color/white"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
-        </svyp.syncsms.customLayout.TransparentCircle>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_user_picture"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_margin="@dimen/fab_margin"
-            app:civ_border_color="@color/colorPrimary"
-            app:civ_border_width="2dp" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,7 +52,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_numbers"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp" />
 

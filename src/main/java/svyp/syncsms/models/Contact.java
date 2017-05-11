@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Contact {
 
-    public String name;
+    private String name;
     public ArrayList<String> numbers;
     public List<Message> messages;
     public Uri photoURI;

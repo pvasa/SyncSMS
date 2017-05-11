@@ -38,7 +38,7 @@ class SendToAdapter extends RecyclerView.Adapter<SendToAdapter.ViewHolder> {
     @Override
     public SendToAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.tv_send_to, parent, false);
+                .inflate(R.layout.ll_send_to, parent, false);
         return new SendToAdapter.ViewHolder(v);
     }
 
@@ -46,12 +46,12 @@ class SendToAdapter extends RecyclerView.Adapter<SendToAdapter.ViewHolder> {
     public void onBindViewHolder(SendToAdapter.ViewHolder holder, int position) {
         final Contact contact = mDataset.get(position);
         final int pos = position;
-        holder.mTVName.setText(contact.name);
+        holder.mTVName.setText(contact.getName());
         holder.mLLSentTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.getMenu().add(Menu.NONE, pos, Menu.CATEGORY_CONTAINER, contact.name);
+                popup.getMenu().add(Menu.NONE, pos, Menu.CATEGORY_CONTAINER, contact.getName());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
