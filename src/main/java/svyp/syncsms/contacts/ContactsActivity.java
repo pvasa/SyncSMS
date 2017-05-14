@@ -10,6 +10,7 @@ import android.support.v4.util.ArraySet;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
@@ -33,7 +35,7 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
     private RecyclerView mRVSendTo, mRVContacts;
     private RecyclerView.Adapter<SendToAdapter.ViewHolder> mAdapterSendTo;
     private ContactsAdapter mAdapterContacts;
-    private ArrayList<Contact> contacts;
+    private HashSet<Contact> contacts;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,12 +143,13 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
     }
 
     void filter(String text) {
-        ArrayList<Contact> temp = new ArrayList<>();
+        SortedList<Contact> temp = new SortedList<>(
+                Contact.class, mAdapterContacts.initializeSortedListAdapterCallback());
         for(Contact contact : contacts) {
             if(contact.getName().contains(text) || contact.getNumbers().contains(text)) {
                 temp.add(contact);
             }
         }
-        mAdapterContacts.updateList(temp);
+        mAdapterContacts.set(temp);
     }
 }

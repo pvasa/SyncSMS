@@ -37,7 +37,7 @@ public class TelephonyProvider {
         }
     };
 
-    public static HashSet<Conversation> getAllConversations(ContentResolver contentResolver) {
+    static HashSet<Conversation> getAllConversations(ContentResolver contentResolver) {
         HashSet<Conversation> conversations = new HashSet<>();
         try (Cursor result = contentResolver.query(
                 Sms.Conversations.CONTENT_URI, Constants.PROJECTION_CONVERSATION, null, null, null)) {
@@ -84,8 +84,8 @@ public class TelephonyProvider {
         return message;
     }
 
-    public static ArrayList<Message> getSMSMessages(ContentResolver contentResolver, int threadId) {
-        ArrayList<Message> messages = new ArrayList<>();
+    public static HashSet<Message> getSMSMessages(ContentResolver contentResolver, int threadId) {
+        HashSet<Message> messages = new HashSet<>();
         try (Cursor result = contentResolver.query(
                 Sms.CONTENT_URI,
                 Constants.PROJECTION_MESSAGE,
@@ -131,14 +131,13 @@ public class TelephonyProvider {
         return messages;
     }
 
-    public static ArrayList<Contact> getAllContacts(ContentResolver cr) {
-        ArrayList<Contact> contacts = new ArrayList<>();
+    public static HashSet<Contact> getAllContacts(ContentResolver cr) {
+        HashSet<Contact> contacts = new HashSet<>();
         try (Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")) {
 
             if (cur != null && cur.moveToFirst()) {
-                contacts = new ArrayList<>();
                 while (cur.moveToNext()) {
                     String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
                     String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
@@ -186,5 +185,4 @@ public class TelephonyProvider {
             }
         } catch (Exception e) {e.printStackTrace();}
     }
-
 }

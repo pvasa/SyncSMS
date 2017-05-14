@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArraySet;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -27,7 +28,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 import svyp.syncsms.Constants;
@@ -145,7 +145,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void filter(CharSequence constraint) {
-        ArrayList<Message> mDataset = mAdapter.getDataset();
+        SortedList<Message> mDataset = mAdapter.getDataset();
         String[] constraintWords =
                 constraint.toString().trim().toLowerCase(Locale.CANADA).split(" ");
 
@@ -172,7 +172,7 @@ public class ChatActivity extends AppCompatActivity {
                     message.body.setSpan(span, startPos, endPos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }
-            mDataset.set(i, message);
+            mDataset.updateItemAt(i, message);
         }
         mAdapter.setDataset(mDataset);
         mRecyclerView.scrollToPosition(i - 1);

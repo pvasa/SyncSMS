@@ -6,16 +6,18 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.util.SortedListAdapterCallback;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.HashSet;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import svyp.syncsms.R;
@@ -24,11 +26,12 @@ import svyp.syncsms.models.Contact;
 class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
 
     private Context context;
-    private List<Contact> mDataset;
+    private SortedList<Contact> mDataset;
 
-    ContactsAdapter(List<Contact> mDataset, Context context) {
+    ContactsAdapter(HashSet<Contact> mDataset, Context context) {
         this.context = context;
-        this.mDataset = mDataset;
+        this.mDataset = new SortedList<>(Contact.class, new MSortedListAdapterCallback(this));
+        this.mDataset.addAll(mDataset);
     }
 
     @Override
@@ -71,7 +74,7 @@ class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
         return mDataset.size();
     }
 
-    void updateList(List<Contact> list) {
+    void set(SortedList<Contact> list) {
         mDataset = list;
         notifyDataSetChanged();
     }
@@ -92,7 +95,59 @@ class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
             mRVNumbers.setLayoutManager(new LinearLayoutManager(v.getContext()));
             mTVIdentifier = (TextView) v.findViewById(R.id.contact_identifier);
             mIVUserImage = (CircleImageView) v.findViewById(R.id.iv_user_picture);
-            //mTCUserIdentifier = (TransparentCircle) v.findViewById(R.id.iv_user_identifier);
+        }
+    }
+
+    MSortedListAdapterCallback initializeSortedListAdapterCallback() {
+        return new MSortedListAdapterCallback(this);
+    }
+
+    private class MSortedListAdapterCallback extends SortedListAdapterCallback<Contact> {
+        /**
+         * Creates a {@link SortedList.Callback} that will forward data change events to the provided
+         * Adapter.
+         *
+         * @param adapter The Adapter instance which should receive events from the SortedList.
+         */
+        MSortedListAdapterCallback(RecyclerView.Adapter adapter) {
+            super(adapter);
+        }
+
+        @Override
+        public int compare(Contact o1, Contact o2) {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+
+        @Override
+        public void onChanged(int position, int count) {
+            notifyItemRangeChanged(position, count);
+        }
+
+        @Override
+        public boolean areContentsTheSame(Contact oldItem, Contact newItem) {
+            return oldItem == newItem;
+        }
+
+        @Override
+        public boolean areItemsTheSame(Contact item1, Contact item2) {
+            return item1 == item2;
+        }
+
+        @Override
+        public void onInserted(int position, int count) {
+            notifyItemRangeInserted(position, count);
+            onChanged(position, count);
+        }
+
+        @Override
+        public void onRemoved(int position, int count) {
+            notifyItemRangeRemoved(position, count);
+            onChanged(position, count);
+        }
+
+        @Override
+        public void onMoved(int fromPosition, int toPosition) {
+            notifyItemMoved(fromPosition, toPosition);
         }
     }
 }

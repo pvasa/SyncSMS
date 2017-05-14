@@ -1,12 +1,14 @@
 package svyp.syncsms.chat;
 
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.util.SortedListAdapterCallback;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
@@ -15,7 +17,7 @@ import svyp.syncsms.models.Message;
 
 class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
-    private ArrayList<Message> mDataset;
+    private SortedList<Message> mDataset;
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         View messageCardView;
@@ -29,8 +31,9 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
     }
 
-    ChatAdapter(ArrayList<Message> mDataset) {
-        this.mDataset = mDataset;
+    ChatAdapter(HashSet<Message> mDataset) {
+        this.mDataset = new SortedList<>(Message.class, new MSortedListAdapterCallback(this));
+        this.mDataset.addAll(mDataset);
     }
 
     @Override
@@ -82,11 +85,11 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
     }
 
-    ArrayList<Message> getDataset() {
+    SortedList<Message> getDataset() {
         return mDataset;
     }
 
-    void setDataset(ArrayList<Message> mDataset) {
+    void setDataset(SortedList<Message> mDataset) {
         this.mDataset = mDataset;
         notifyDataSetChanged();
     }
@@ -103,5 +106,54 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     public void add(Message message) {
         mDataset.add(message);
+    }
+
+    private class MSortedListAdapterCallback extends SortedListAdapterCallback<Message> {
+        /**
+         * Creates a {@link SortedList.Callback} that will forward data change events to the provided
+         * Adapter.
+         *
+         * @param adapter The Adapter instance which should receive events from the SortedList.
+         */
+        MSortedListAdapterCallback(RecyclerView.Adapter adapter) {
+            super(adapter);
+        }
+
+        @Override
+        public int compare(Message o1, Message o2) {
+            return o1.date > o2.date ? -1 : 1;
+        }
+
+        @Override
+        public void onChanged(int position, int count) {
+            notifyItemRangeChanged(position, count);
+        }
+
+        @Override
+        public boolean areContentsTheSame(Message oldItem, Message newItem) {
+            return oldItem == newItem;
+        }
+
+        @Override
+        public boolean areItemsTheSame(Message item1, Message item2) {
+            return item1._id == item2._id;
+        }
+
+        @Override
+        public void onInserted(int position, int count) {
+            notifyItemRangeInserted(position, count);
+            onChanged(position, count);
+        }
+
+        @Override
+        public void onRemoved(int position, int count) {
+            notifyItemRangeRemoved(position, count);
+            onChanged(position, count);
+        }
+
+        @Override
+        public void onMoved(int fromPosition, int toPosition) {
+            notifyItemMoved(fromPosition, toPosition);
+        }
     }
 }
