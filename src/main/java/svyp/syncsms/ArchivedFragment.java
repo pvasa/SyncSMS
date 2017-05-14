@@ -42,7 +42,7 @@ public class ArchivedFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new ConversationsAdapter(new HashSet<Conversation>(), true);
+        mAdapter = new ConversationsAdapter(new HashSet<Conversation>(), getActivity(), true);
         mRecyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper.SimpleCallback simpleCallback =

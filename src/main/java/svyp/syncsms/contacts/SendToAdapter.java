@@ -46,12 +46,12 @@ class SendToAdapter extends RecyclerView.Adapter<SendToAdapter.ViewHolder> {
     public void onBindViewHolder(SendToAdapter.ViewHolder holder, int position) {
         final Contact contact = mDataset.get(position);
         final int pos = position;
-        holder.mTVName.setText(contact.getName());
+        holder.mTVName.setText(contact.name);
         holder.mLLSentTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.getMenu().add(Menu.NONE, pos, Menu.CATEGORY_CONTAINER, contact.getName());
+                popup.getMenu().add(Menu.NONE, pos, Menu.CATEGORY_CONTAINER, contact.name);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -66,8 +66,8 @@ class SendToAdapter extends RecyclerView.Adapter<SendToAdapter.ViewHolder> {
 
     private void addItem(Contact contact) {
         mDataset.add(contact);
-        notifyItemInserted(mDataset.indexOf(contact));
-        notifyItemRangeChanged(mDataset.indexOf(contact), getItemCount());
+        notifyItemInserted(mDataset.size() - 1);
+        notifyItemRangeChanged(mDataset.size() - 1, 1);
     }
 
     private void removeItem(int position) {

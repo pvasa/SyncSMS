@@ -1,5 +1,6 @@
 package svyp.syncsms;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.util.SortedList;
@@ -12,15 +13,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import svyp.syncsms.chat.ChatActivity;
+import svyp.syncsms.models.Contact;
 import svyp.syncsms.models.Conversation;
 
 class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdapter.ViewHolder> {
 
     private SortedList<Conversation> mDataset;
     private boolean archive;
+    private Context context;
+    private ArrayList<Contact> contacts;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -37,10 +42,12 @@ class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdapter.Vie
         }
     }
 
-    ConversationsAdapter(HashSet<Conversation> mDataset, boolean archive) {
+    ConversationsAdapter(HashSet<Conversation> mDataset, Context context, boolean archive) {
         this.archive = archive;
         this.mDataset = new SortedList<>(Conversation.class, new MSortedListAdapterCallback(this));
         this.mDataset.addAll(mDataset);
+        this.context = context;
+        this.contacts = TelephonyProvider.getAllContacts(context.getContentResolver());
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArraySet;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import svyp.syncsms.Constants;
@@ -40,13 +41,13 @@ public class ChatActivity extends AppCompatActivity {
 
     private static final String TAG = ChatActivity.class.getName();
 
-    private SearchView searchView;
+    private SearchView mSearchView;
 
     private ColorStateList colorStateListAccent;
 
     private String address;
 
-    private RecyclerView mRecyclerView;
+    private RecyclerView mRVMessages;
     private ChatAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
@@ -81,26 +82,15 @@ public class ChatActivity extends AppCompatActivity {
                 new ColorStateList(new int[][]{new int[]{}}, new int[] {
                         ContextCompat.getColor(this, R.color.colorAccent)
                 });
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_messages);
+        mRVMessages = (RecyclerView) findViewById(R.id.rv_messages);
 
-        mRecyclerView.setHasFixedSize(true);
+        mRVMessages.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setStackFromEnd(true);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRVMessages.setLayoutManager(mLayoutManager);
 
-        mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right,int bottom, int oldLeft, int oldTop,int oldRight, int oldBottom) {
-                mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
-            }
-        });
-
-        mAdapter = new ChatAdapter(
-                TelephonyProvider.getSMSMessages(
-                        getContentResolver(), getIntent().getIntExtra(Constants.KEY_THREAD_ID, -1)));
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
+        new LoadMessages().execute();
 
         if (getIntent().getBooleanExtra(Constants.KEY_ARCHIVED, false)) {
             findViewById(R.id.rl_new_message).setVisibility(View.GONE);
@@ -145,7 +135,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void filter(CharSequence constraint) {
-        SortedList<Message> mDataset = mAdapter.getDataset();
+        ArrayList<Message> mDataset = mAdapter.getDataset();
         String[] constraintWords =
                 constraint.toString().trim().toLowerCase(Locale.CANADA).split(" ");
 
@@ -172,10 +162,10 @@ public class ChatActivity extends AppCompatActivity {
                     message.body.setSpan(span, startPos, endPos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }
-            mDataset.updateItemAt(i, message);
+            mDataset.set(i, message);
         }
         mAdapter.setDataset(mDataset);
-        mRecyclerView.scrollToPosition(i - 1);
+        mRVMessages.scrollToPosition(i - 1);
     }
 
     @Override
@@ -187,8 +177,8 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean show = super.onPrepareOptionsMenu(menu);
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
                         filter(query);
@@ -210,8 +200,8 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (searchView.isIconified()) super.onBackPressed();
-        else searchView.onActionViewCollapsed();
+        if (mSearchView.isIconified()) super.onBackPressed();
+        else mSearchView.onActionViewCollapsed();
     }
 
     @Override
@@ -234,5 +224,24 @@ public class ChatActivity extends AppCompatActivity {
 
     private TextAppearanceSpan getHighlightSpan() {
         return new TextAppearanceSpan(null, Typeface.BOLD, -1, colorStateListAccent, null);
+    }
+
+    private class LoadMessages extends AsyncTask<Void, Void, ArrayList<Message>> {
+
+        @Override
+        protected ArrayList<Message> doInBackground(Void... voids) {
+            return TelephonyProvider.getSMSMessages(
+                    ChatActivity.this.getContentResolver(),
+                    ChatActivity.this.getIntent().getIntExtra(Constants.KEY_THREAD_ID, -1));
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Message> result){
+            super.onPostExecute(result);
+            if(mRVMessages != null) {
+                mAdapter = new ChatAdapter(result);
+                mRVMessages.setAdapter(mAdapter);
+            }
+        }
     }
 }

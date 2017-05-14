@@ -42,7 +42,7 @@ public class ConversationsFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new ConversationsAdapter(
-                TelephonyProvider.getAllConversations(getActivity().getContentResolver()), false);
+                TelephonyProvider.getAllConversations(getActivity().getContentResolver()), getActivity(), false);
         mRecyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper.SimpleCallback simpleCallback =

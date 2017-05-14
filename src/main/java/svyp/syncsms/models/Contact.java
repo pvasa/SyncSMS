@@ -7,35 +7,16 @@ import java.util.List;
 
 public class Contact {
 
-    private String name;
+    public int _id;
+    public String name;
     public ArrayList<String> numbers;
     public List<Message> messages;
     public Uri photoURI;
 
-    public Contact(String name, ArrayList<String> numbers, Uri photoURI) {
+    public Contact(int contact_id, String name, ArrayList<String> numbers, Uri photoURI) {
+        this._id = contact_id;
         this.name = name;
         this.numbers = numbers;
         this.photoURI = photoURI;
-    }
-
-    public Contact(String name, ArrayList<String> numbers) {
-        this.name = name;
-        this.numbers = numbers;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ArrayList<String> getNumbers() {
-        return numbers;
-    }
-
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public Uri getPhotoURI() {
-        return photoURI;
     }
 }

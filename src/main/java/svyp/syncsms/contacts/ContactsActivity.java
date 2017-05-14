@@ -7,20 +7,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArraySet;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import svyp.syncsms.Constants;
 import svyp.syncsms.R;
@@ -28,14 +24,13 @@ import svyp.syncsms.TelephonyProvider;
 import svyp.syncsms.Utils;
 import svyp.syncsms.models.Contact;
 
-public class ContactsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class ContactsActivity extends AppCompatActivity {
 
     private static final String TAG = ContactsActivity.class.getName();
 
     private RecyclerView mRVSendTo, mRVContacts;
     private RecyclerView.Adapter<SendToAdapter.ViewHolder> mAdapterSendTo;
     private ContactsAdapter mAdapterContacts;
-    private HashSet<Contact> contacts;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,25 +68,18 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
         }
     }
 
-    private class LoadContacts extends AsyncTask<Void, Void, Boolean>{
+    private class LoadContacts extends AsyncTask<Void, Void, ArrayList<Contact>> {
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
-            contacts = TelephonyProvider.getAllContacts(getContentResolver());
-            return !contacts.isEmpty();
+        protected ArrayList<Contact> doInBackground(Void... voids) {
+            return TelephonyProvider.getAllContacts(getContentResolver());
         }
 
-        protected void onPostExecute(Boolean result){
+        protected void onPostExecute(ArrayList<Contact> result) {
             super.onPostExecute(result);
-            if(result && mRVContacts!=null){
-                mAdapterContacts = new ContactsAdapter(contacts, ContactsActivity.this);
+            if (mRVContacts != null) {
+                mAdapterContacts = new ContactsAdapter(result, ContactsActivity.this);
                 mRVContacts.setAdapter(mAdapterContacts);
-                mRVContacts.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                    @Override
-                    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                        mRVContacts.scrollToPosition(mAdapterContacts.getItemCount() - 1);
-                    }
-                });
             }
         }
     }
@@ -99,13 +87,26 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_contacts, menu);
-        menu.findItem(R.id.action_search).expandActionView();
-
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(this);
-
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean show = super.onPrepareOptionsMenu(menu);
+
+        MenuItem mSearchItem = menu.findItem(R.id.action_search);
+        mSearchItem.expandActionView();
+        SearchView mSearchView = (SearchView) mSearchItem.getActionView();
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {return false;}
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapterContacts.filter(newText);
+                return true;
+            }
+        });
+        return show;
     }
 
     @Override
@@ -131,25 +132,5 @@ public class ContactsActivity extends AppCompatActivity implements SearchView.On
                 }
             }
         }
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String s) {return false;}
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-        filter(s);
-        return true;
-    }
-
-    void filter(String text) {
-        SortedList<Contact> temp = new SortedList<>(
-                Contact.class, mAdapterContacts.initializeSortedListAdapterCallback());
-        for(Contact contact : contacts) {
-            if(contact.getName().contains(text) || contact.getNumbers().contains(text)) {
-                temp.add(contact);
-            }
-        }
-        mAdapterContacts.set(temp);
     }
 }
